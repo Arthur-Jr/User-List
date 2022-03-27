@@ -39,7 +39,7 @@ describe('Testes dos end-points relacionados ao CPF', () => {
     const registerCpf = async (cpf) => {
       response = await chai.request(server)
       .post('/cpf')
-      .send({ cpf });
+      .send({ cpf, blockListed: false });
     }
 
     describe('Quando é registrado com sucesso:', () => {
