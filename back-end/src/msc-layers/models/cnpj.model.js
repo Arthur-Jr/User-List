@@ -25,8 +25,17 @@ const editCnpjModel = async (cnpjToEdit, blockListedStatus) => {
   return value;
 };
 
+const removeCnpjModel = async (cnpjToRemove) => {
+  const db = await connection();
+  const { deletedCount } = await db.collection(COLLECTION_NAME)
+    .deleteOne({ cnpj: cnpjToRemove });
+
+  return deletedCount;
+};
+
 module.exports = {
   registerCnpjModel,
   getCnpjByCnpjModel,
   editCnpjModel,
+  removeCnpjModel,
 };

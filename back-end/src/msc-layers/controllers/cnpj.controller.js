@@ -2,7 +2,7 @@ const rescue = require('express-rescue');
 
 const { CREATED, OK_STATUS } = require('../../utils/http_code_status');
 const {
-  registerCnpjService, editCnpjService,
+  registerCnpjService, editCnpjService, removeCnpjService,
 } = require('../services/cnpj.service');
 
 const registerCnpjController = rescue(async (req, res) => {
@@ -19,7 +19,15 @@ const editCnpjController = rescue(async (req, res) => {
   return res.status(OK_STATUS).json(editedCnpj);
 });
 
+const removeCnpjController = rescue(async (req, res) => {
+  const { cnpj } = req.params;
+  await removeCnpjService(cnpj);
+
+  return res.status(OK_STATUS).json({ message: 'CNPJ removido com sucesso' });
+});
+
 module.exports = {
   registerCnpjController,
   editCnpjController,
+  removeCnpjController,
 };
