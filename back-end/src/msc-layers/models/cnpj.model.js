@@ -14,7 +14,19 @@ const getCnpjByCnpjModel = async (cnpjToFind) => {
   return cnpj;
 };
 
+const editCnpjModel = async (cnpjToEdit, blockListedStatus) => {
+  const db = await connection();
+  const { value } = await db.collection(COLLECTION_NAME).findOneAndUpdate(
+    { cnpj: cnpjToEdit },
+    { $set: { blockListed: blockListedStatus } },
+    { returnDocument: 'after' },
+  );
+
+  return value;
+};
+
 module.exports = {
   registerCnpjModel,
   getCnpjByCnpjModel,
+  editCnpjModel,
 };

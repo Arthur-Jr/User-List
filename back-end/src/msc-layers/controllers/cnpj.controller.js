@@ -1,7 +1,9 @@
 const rescue = require('express-rescue');
 
-const { CREATED } = require('../../utils/http_code_status');
-const { registerCnpjService } = require('../services/cnpj.service');
+const { CREATED, OK_STATUS } = require('../../utils/http_code_status');
+const {
+  registerCnpjService, editCnpjService,
+} = require('../services/cnpj.service');
 
 const registerCnpjController = rescue(async (req, res) => {
   const { cnpj, blockListed } = req.body;
@@ -10,6 +12,14 @@ const registerCnpjController = rescue(async (req, res) => {
   return res.status(CREATED).json(registeredCnpj);
 });
 
+const editCnpjController = rescue(async (req, res) => {
+  const { params: { cnpj }, body: { blockListed } } = req;
+
+  const editedCnpj = await editCnpjService(cnpj, blockListed);
+  return res.status(OK_STATUS).json(editedCnpj);
+});
+
 module.exports = {
   registerCnpjController,
+  editCnpjController,
 };

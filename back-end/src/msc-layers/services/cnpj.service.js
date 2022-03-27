@@ -1,9 +1,11 @@
 const { validator } = require('cpf-cnpj-validator');
 const joi = require('joi').extend(validator);
 
-const { BAD_REQUEST, CONFLICT } = require('../../utils/http_code_status');
+const { BAD_REQUEST, CONFLICT, NOT_FOUND } = require('../../utils/http_code_status');
 const errorThrow = require('../../utils/errorThrow');
-const { registerCnpjModel, getCnpjByCnpjModel } = require('../models/cnpj.model');
+const {
+  registerCnpjModel, getCnpjByCnpjModel, editCnpjModel,
+} = require('../models/cnpj.model');
 
 const checkCnpjValidations = (cnpj) => {
   const cnpjSchema = joi.document().cnpj();
@@ -24,6 +26,16 @@ const registerCnpjService = async ({ cnpj, blockListed }) => {
   return { id };
 };
 
+const editCnpjService = async (cnpjToEdit, blockListedStatus) => {
+  checkCnpjValidations(cnpjToEdit);
+
+  const editedCnpj = await editCnpjModel(cnpjToEdit, blockListedStatus);
+
+  if (editedCnpj === null) errorThrow(NOT_FOUND, 'CNPJ não encontrado');
+  return editedCnpj;
+};
+
 module.exports = {
   registerCnpjService,
+  editCnpjService,
 };
