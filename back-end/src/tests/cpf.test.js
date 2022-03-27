@@ -187,13 +187,25 @@ describe('Testes dos end-points relacionados ao CPF', () => {
     describe('Quando é removido com sucesso:', () => {
       before(async () => await removeCpf(CPF_EXAMPLE));
 
-      it('Deve retornar o código de status 204', () => {
-        expect(response).to.have.status(NO_CONTENT);
+      it('Deve retornar o código de status 200', () => {
+        expect(response).to.have.status(OK_STATUS);
+      });
+
+      it('Deve retornar um objeto', () => {
+        expect(response.body).to.be.a('object');
+      });
+
+      it('Deve possuir a propriedade "message"', () => {
+        expect(response.body).to.have.property('message');
+      });
+
+      it('A propriedade "message" deve ser igual a "CPF removido com sucesso"', () => {
+        expect(response.body.message).to.be.equal('CPF removido com sucesso');
       });
     });
 
     describe('Quando o CPF não existe:', () => {
-      before(async () => await removeCpf('64122484520'));
+      before(async () => await removeCpf(CPF_EXAMPLE));
 
       it('Deve retornar o código de status 404', () => {
         expect(response).to.have.status(NOT_FOUND);
