@@ -12,7 +12,7 @@ const {
 
 chai.use(chaiHttp);
 
-const DB_NAME = 'cpf/cnpj-validation';
+const DB_NAME = 'cpf-cnpj-list';
 const DB_COLLECTION = 'cpfs';
 const CPF_EXAMPLE = '64122484553';
 
@@ -52,17 +52,20 @@ describe('Testes dos end-points relacionados ao CPF', () => {
         expect(response.body).to.be.a('object');
       });
 
-      it('Deve possuir a propriedade "cpf"', () => {
-        expect(response.body).to.have.property('cpf');
+      it('Deve possuir a propriedade "id', () => {
+        expect(response.body).to.have.property('id');
       });
 
-      it(`A propriedade "cpf" deve ser igual a ${CPF_EXAMPLE}`, () => {
-        expect(response.body.cpf).to.be.equal(CPF_EXAMPLE);
+      it(`O CPF:${CPF_EXAMPLE} deve está registrado no banco.`, async () => {
+        const { cpf: insertedCpf } = await connectionMock.db(DB_NAME)
+        .collection(DB_COLLECTION).findOne({ cpf: CPF_EXAMPLE });
+
+        expect(insertedCpf).to.be.equal(CPF_EXAMPLE);
       });
     });
 
     describe('Quando o CPF é inválido:', () => {
-      before(async () => await registerCpf('4444'));
+      before(async () => await registerCpf('27690613567'));
 
       it('Deve retornar o código de status 400', () => {
         expect(response).to.have.status(BAD_REQUEST);
