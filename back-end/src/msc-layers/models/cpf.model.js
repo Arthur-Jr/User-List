@@ -14,7 +14,19 @@ const getCpfByCpfModel = async (cpfToFind) => {
   return cpf;
 };
 
+const editCpfModel = async (cpfToEdit, blockListedStatus) => {
+  const db = await connection();
+  const { value } = await db.collection(COLLECTION_NAME).findOneAndUpdate(
+    { cpf: cpfToEdit },
+    { $set: { blockListed: blockListedStatus } },
+    { returnDocument: 'after' },
+  );
+
+  return value;
+};
+
 module.exports = {
   registerCpfModel,
   getCpfByCpfModel,
+  editCpfModel,
 };

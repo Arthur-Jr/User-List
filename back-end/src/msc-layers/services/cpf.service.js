@@ -1,9 +1,11 @@
 const { validator } = require('cpf-cnpj-validator');
 const joi = require('joi').extend(validator);
 
-const { BAD_REQUEST, CONFLICT } = require('../../utils/http_code_status');
+const { BAD_REQUEST, CONFLICT, NOT_FOUND } = require('../../utils/http_code_status');
 const errorThrow = require('../../utils/errorThrow');
-const { registerCpfModel, getCpfByCpfModel } = require('../models/cpf.model');
+const {
+  registerCpfModel, getCpfByCpfModel, editCpfModel,
+} = require('../models/cpf.model');
 
 const checkCpf = (cpf) => {
   const cpfSchema = joi.document().cpf();
@@ -24,6 +26,16 @@ const registerCpfService = async ({ cpf, blockListed }) => {
   return { id };
 };
 
+const editCpfService = async (cpfToEdit, blockListedStatus) => {
+  checkCpf(cpfToEdit);
+
+  const editedCpf = await editCpfModel(cpfToEdit, blockListedStatus);
+
+  if (editedCpf === null) errorThrow(NOT_FOUND, 'CPF não encontrado');
+  return editedCpf;
+};
+
 module.exports = {
   registerCpfService,
+  editCpfService,
 };
