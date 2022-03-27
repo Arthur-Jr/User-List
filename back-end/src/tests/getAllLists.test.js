@@ -10,7 +10,7 @@ const { OK_STATUS } = require('../utils/http_code_status');
 
 chai.use(chaiHttp);
 
-const DB_NAME = 'cpf/cnpj-validation';
+const DB_NAME = 'cpf-cnpj-list';
 const DB_COLLECTION_1 = 'cpfs';
 const DB_COLLECTION_2 = 'cpnjs';
 

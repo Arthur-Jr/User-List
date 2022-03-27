@@ -12,7 +12,7 @@ const {
 
 chai.use(chaiHttp);
 
-const DB_NAME = 'cpf/cnpj-validation';
+const DB_NAME = 'cpf-cnpj-list';
 const DB_COLLECTION = 'cpnjs';
 const CNPJ_EXAMPLE = '51855572000193';
 
