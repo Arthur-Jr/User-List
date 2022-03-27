@@ -33,9 +33,18 @@ const removeCpfModel = async (cpfToRemove) => {
   return deletedCount;
 };
 
+const getAllCpfModel = async () => {
+  const db = await connection();
+  const cpfArray = await db.collection(COLLECTION_NAME)
+    .find().toArray();
+
+  return cpfArray;
+};
+
 module.exports = {
   registerCpfModel,
   getCpfByCpfModel,
   editCpfModel,
   removeCpfModel,
+  getAllCpfModel,
 };

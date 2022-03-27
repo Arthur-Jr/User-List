@@ -4,7 +4,11 @@ const joi = require('joi').extend(validator);
 const { BAD_REQUEST, CONFLICT, NOT_FOUND } = require('../../utils/http_code_status');
 const errorThrow = require('../../utils/errorThrow');
 const {
-  registerCpfModel, getCpfByCpfModel, editCpfModel, removeCpfModel,
+  registerCpfModel,
+  getCpfByCpfModel,
+  editCpfModel,
+  removeCpfModel,
+  getAllCpfModel,
 } = require('../models/cpf.model');
 
 const checkCpfValidations = (cpf) => {
@@ -42,8 +46,11 @@ const removeCpfService = async (cpfToRemove) => {
   if (deletedCount === 0) errorThrow(NOT_FOUND, 'CPF não encontrado');
 };
 
+const getAllCpfService = async () => getAllCpfModel();
+
 module.exports = {
   registerCpfService,
   editCpfService,
   removeCpfService,
+  getAllCpfService,
 };

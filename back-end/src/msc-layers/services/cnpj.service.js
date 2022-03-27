@@ -4,7 +4,11 @@ const joi = require('joi').extend(validator);
 const { BAD_REQUEST, CONFLICT, NOT_FOUND } = require('../../utils/http_code_status');
 const errorThrow = require('../../utils/errorThrow');
 const {
-  registerCnpjModel, getCnpjByCnpjModel, editCnpjModel, removeCnpjModel,
+  registerCnpjModel,
+  getCnpjByCnpjModel,
+  editCnpjModel,
+  removeCnpjModel,
+  getAllCnpjModel,
 } = require('../models/cnpj.model');
 
 const checkCnpjValidations = (cnpj) => {
@@ -42,8 +46,11 @@ const removeCnpjService = async (cnpjToRemove) => {
   if (deletedCount === 0) errorThrow(NOT_FOUND, 'CNPJ não encontrado');
 };
 
+const getAllCnpjService = async () => getAllCnpjModel();
+
 module.exports = {
   registerCnpjService,
   editCnpjService,
   removeCnpjService,
+  getAllCnpjService,
 };

@@ -33,9 +33,18 @@ const removeCnpjModel = async (cnpjToRemove) => {
   return deletedCount;
 };
 
+const getAllCnpjModel = async () => {
+  const db = await connection();
+  const cnpjArray = await db.collection(COLLECTION_NAME)
+    .find().toArray();
+
+  return cnpjArray;
+};
+
 module.exports = {
   registerCnpjModel,
   getCnpjByCnpjModel,
   editCnpjModel,
   removeCnpjModel,
+  getAllCnpjModel,
 };
