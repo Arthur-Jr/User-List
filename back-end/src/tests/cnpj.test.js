@@ -13,7 +13,7 @@ const {
 chai.use(chaiHttp);
 
 const DB_NAME = 'cpf-cnpj-list';
-const DB_COLLECTION = 'cpnjs';
+const DB_COLLECTION = 'cnpjs';
 const CNPJ_EXAMPLE = '51855572000193';
 
 describe('Testes dos end-points relacionados ao CNPJ', () => {
@@ -38,7 +38,7 @@ describe('Testes dos end-points relacionados ao CNPJ', () => {
     const registerCnpj = async (cnpj) => {
       response = await chai.request(server)
       .post('/cnpj')
-      .send({ cnpj });
+      .send({ cnpj, blockListed: false });
     }
 
     describe('Quando é registrado com sucesso:', () => {
@@ -52,12 +52,15 @@ describe('Testes dos end-points relacionados ao CNPJ', () => {
         expect(response.body).to.be.a('object');
       });
 
-      it('Deve possuir a propriedade "cnpj"', () => {
-        expect(response.body).to.have.property('cnpj');
+      it('Deve possuir a propriedade "id"', () => {
+        expect(response.body).to.have.property('id');
       });
 
-      it(`A propriedade "cnpj" deve ser igual a ${CNPJ_EXAMPLE}`, () => {
-        expect(response.body.cnpj).to.be.equal(CNPJ_EXAMPLE);
+      it(`O CNPJ:${CNPJ_EXAMPLE} deve está registrado no banco.`, async () => {
+        const { cnpj: insertedCnpj } = await connectionMock.db(DB_NAME)
+        .collection(DB_COLLECTION).findOne({ cnpj: CNPJ_EXAMPLE });
+
+        expect(insertedCnpj).to.be.equal(CNPJ_EXAMPLE);
       });
     });
 
