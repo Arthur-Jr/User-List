@@ -25,8 +25,17 @@ const editCpfModel = async (cpfToEdit, blockListedStatus) => {
   return value;
 };
 
+const removeCpfModel = async (cpfToRemove) => {
+  const db = await connection();
+  const { deletedCount } = await db.collection(COLLECTION_NAME)
+    .deleteOne({ cpf: cpfToRemove });
+
+  return deletedCount;
+};
+
 module.exports = {
   registerCpfModel,
   getCpfByCpfModel,
   editCpfModel,
+  removeCpfModel,
 };

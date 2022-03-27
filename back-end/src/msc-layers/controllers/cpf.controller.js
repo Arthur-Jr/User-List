@@ -1,7 +1,9 @@
 const rescue = require('express-rescue');
 
 const { CREATED, OK_STATUS } = require('../../utils/http_code_status');
-const { registerCpfService, editCpfService } = require('../services/cpf.service');
+const {
+  registerCpfService, editCpfService, removeCpfService,
+} = require('../services/cpf.service');
 
 const registerCpfController = rescue(async (req, res) => {
   const { cpf, blockListed } = req.body;
@@ -17,7 +19,15 @@ const editCpfController = rescue(async (req, res) => {
   return res.status(OK_STATUS).json(editedCpf);
 });
 
+const removeCpfController = rescue(async (req, res) => {
+  const { cpf } = req.params;
+  await removeCpfService(cpf);
+
+  return res.status(OK_STATUS).json({ message: 'CPF removido com sucesso' });
+});
+
 module.exports = {
   registerCpfController,
   editCpfController,
+  removeCpfController,
 };

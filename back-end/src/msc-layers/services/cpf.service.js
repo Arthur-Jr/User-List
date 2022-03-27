@@ -4,10 +4,10 @@ const joi = require('joi').extend(validator);
 const { BAD_REQUEST, CONFLICT, NOT_FOUND } = require('../../utils/http_code_status');
 const errorThrow = require('../../utils/errorThrow');
 const {
-  registerCpfModel, getCpfByCpfModel, editCpfModel,
+  registerCpfModel, getCpfByCpfModel, editCpfModel, removeCpfModel,
 } = require('../models/cpf.model');
 
-const checkCpf = (cpf) => {
+const checkCpfValidations = (cpf) => {
   const cpfSchema = joi.document().cpf();
   const { error } = cpfSchema.validate(cpf);
   if (error) errorThrow(BAD_REQUEST, 'CPF inválido');
@@ -19,7 +19,7 @@ const checkCpfDuplicity = async (cpf) => {
 };
 
 const registerCpfService = async ({ cpf, blockListed }) => {
-  checkCpf(cpf);
+  checkCpfValidations(cpf);
   await checkCpfDuplicity(cpf);
 
   const id = await registerCpfModel({ cpf, blockListed });
@@ -27,7 +27,7 @@ const registerCpfService = async ({ cpf, blockListed }) => {
 };
 
 const editCpfService = async (cpfToEdit, blockListedStatus) => {
-  checkCpf(cpfToEdit);
+  checkCpfValidations(cpfToEdit);
 
   const editedCpf = await editCpfModel(cpfToEdit, blockListedStatus);
 
@@ -35,7 +35,15 @@ const editCpfService = async (cpfToEdit, blockListedStatus) => {
   return editedCpf;
 };
 
+const removeCpfService = async (cpfToRemove) => {
+  checkCpfValidations(cpfToRemove);
+  const deletedCount = await removeCpfModel(cpfToRemove);
+
+  if (deletedCount === 0) errorThrow(NOT_FOUND, 'CPF não encontrado');
+};
+
 module.exports = {
   registerCpfService,
   editCpfService,
+  removeCpfService,
 };
