@@ -189,13 +189,25 @@ describe('Testes dos end-points relacionados ao CNPJ', () => {
     describe('Quando é removido com sucesso:', () => {
       before(async () => await removeCnpj(CNPJ_EXAMPLE));
 
-      it('Deve retornar o código de status 204', () => {
-        expect(response).to.have.status(NO_CONTENT);
+      it('Deve retornar o código de status 200', () => {
+        expect(response).to.have.status(OK_STATUS);
+      });
+
+      it('Deve retornar um objeto', () => {
+        expect(response.body).to.be.a('object');
+      });
+
+      it('Deve possuir a propriedade "message"', () => {
+        expect(response.body).to.have.property('message');
+      });
+
+      it('A propriedade "message" deve ser igual a "CNPJ removido com sucesso"', () => {
+        expect(response.body.message).to.be.equal('CNPJ removido com sucesso');
       });
     });
 
     describe('Quando o CNPJ não existe:', () => {
-      before(async () => await removeCnpj('51855572000120'));
+      before(async () => await removeCnpj('96910365000122'));
 
       it('Deve retornar o código de status 404', () => {
         expect(response).to.have.status(NOT_FOUND);
