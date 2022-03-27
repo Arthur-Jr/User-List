@@ -4,6 +4,7 @@ const cors = require('cors');
 
 const errorMiddleware = require('../middlewares/errorMiddleware');
 const cpfRouter = require('../msc-layers/routers/cpf.router');
+const cnpjRouter = require('../msc-layers/routers/cnpj.router');
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -12,7 +13,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.use('/cpf', cpfRouter); /* Registro, edição e remoção de CPF */
-// app.use('/cnpj');
+app.use('/cnpj', cnpjRouter); /* Registro, edição e remoção de CNPJ */
 // app.get('/cpf-cnpj-lists');
 
 app.use(errorMiddleware);
