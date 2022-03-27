@@ -14,7 +14,8 @@ chai.use(chaiHttp);
 
 const DB_NAME = 'cpf-cnpj-list';
 const DB_COLLECTION = 'cnpjs';
-const CNPJ_EXAMPLE = '51855572000193';
+const CNPJ_EXAMPLE = '59609150000140';
+const INVALID_CNPJ_EXAMPLE = '59609150000100';
 
 describe('Testes dos end-points relacionados ao CNPJ', () => {
   let connectionMock;
@@ -65,7 +66,7 @@ describe('Testes dos end-points relacionados ao CNPJ', () => {
     });
 
     describe('Quando o CNPJ é inválido:', () => {
-      before(async () => await registerCnpj('4444'));
+      before(async () => await registerCnpj(INVALID_CNPJ_EXAMPLE));
 
       it('Deve retornar o código de status 400', () => {
         expect(response).to.have.status(BAD_REQUEST);
@@ -84,7 +85,7 @@ describe('Testes dos end-points relacionados ao CNPJ', () => {
       });
     });
 
-    describe('Quando o CPF já está registrado:', () => {
+    describe('Quando o CNPJ já está registrado:', () => {
       before(async () => await registerCnpj(CNPJ_EXAMPLE));
 
       it('Deve retornar o código de status 409', () => {
@@ -135,7 +136,9 @@ describe('Testes dos end-points relacionados ao CNPJ', () => {
     });
 
     describe('Quando o CNPJ é inválido:', () => {
-      before(async () => await editCnpj(CNPJ_EXAMPLE, { cnpj: '444' }));
+      before(async () => await editCnpj(INVALID_CNPJ_EXAMPLE, {
+        cnpj: INVALID_CNPJ_EXAMPLE,
+      }));
 
       it('Deve retornar o código de status 400', () => {
         expect(response).to.have.status(BAD_REQUEST);
@@ -155,7 +158,7 @@ describe('Testes dos end-points relacionados ao CNPJ', () => {
     });
 
     describe('Quando o CNPJ não existe:', () => {
-      before(async () => await editCnpj('51855572000120', { blockListed: true }));
+      before(async () => await editCnpj('96910365000122', { blockListed: true }));
 
       it('Deve retornar o código de status 404', () => {
         expect(response).to.have.status(NOT_FOUND);
