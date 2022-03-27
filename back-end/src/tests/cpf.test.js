@@ -15,6 +15,7 @@ chai.use(chaiHttp);
 const DB_NAME = 'cpf-cnpj-list';
 const DB_COLLECTION = 'cpfs';
 const CPF_EXAMPLE = '64122484553';
+const INVALID_CPF_EXAMPLE = '27690613567';
 
 describe('Testes dos end-points relacionados ao CPF', () => {
   let connectionMock;
@@ -65,7 +66,7 @@ describe('Testes dos end-points relacionados ao CPF', () => {
     });
 
     describe('Quando o CPF é inválido:', () => {
-      before(async () => await registerCpf('27690613567'));
+      before(async () => await registerCpf(INVALID_CPF_EXAMPLE));
 
       it('Deve retornar o código de status 400', () => {
         expect(response).to.have.status(BAD_REQUEST);
@@ -135,7 +136,7 @@ describe('Testes dos end-points relacionados ao CPF', () => {
     });
 
     describe('Quando o CPF é inválido:', () => {
-      before(async () => await editCpf(CPF_EXAMPLE, { cpf: '444' }));
+      before(async () => await editCpf(INVALID_CPF_EXAMPLE, { blockListed: true }));
 
       it('Deve retornar o código de status 400', () => {
         expect(response).to.have.status(BAD_REQUEST);
@@ -155,7 +156,7 @@ describe('Testes dos end-points relacionados ao CPF', () => {
     });
 
     describe('Quando o CPF não existe:', () => {
-      before(async () => await editCpf('64122484520', { blockListed: true }));
+      before(async () => await editCpf('78263704006', { blockListed: true }));
 
       it('Deve retornar o código de status 404', () => {
         expect(response).to.have.status(NOT_FOUND);
