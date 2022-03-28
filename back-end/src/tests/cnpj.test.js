@@ -28,7 +28,6 @@ describe('Testes dos end-points relacionados ao CNPJ', () => {
 
   after(async () => {
     await connectionMock.db(DB_NAME).collection(DB_COLLECTION).deleteMany({});
-    await connectionMock.db(DB_NAME).collection(DB_COLLECTION).drop();
     MongoClient.connect.restore();
     console.log.restore();
   });
