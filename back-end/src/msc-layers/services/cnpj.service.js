@@ -3,6 +3,7 @@ const joi = require('joi').extend(validator);
 
 const { BAD_REQUEST, CONFLICT, NOT_FOUND } = require('../../utils/http_code_status');
 const errorThrow = require('../../utils/errorThrow');
+const errorMessage = require('../../utils/errorMessages');
 const {
   registerCnpjModel,
   getCnpjByCnpjModel,
@@ -14,12 +15,12 @@ const {
 const checkCnpjValidations = (cnpj) => {
   const cnpjSchema = joi.document().cnpj();
   const { error } = cnpjSchema.validate(cnpj);
-  if (error) errorThrow(BAD_REQUEST, 'CNPJ inválido');
+  if (error) errorThrow(BAD_REQUEST, `CNPJ ${errorMessage.invalid}`);
 };
 
 const checkCnpjDuplicity = async (cnpj) => {
   const checkResult = await getCnpjByCnpjModel(cnpj);
-  if (checkResult) errorThrow(CONFLICT, 'CNPJ Já registrado');
+  if (checkResult) errorThrow(CONFLICT, `CNPJ ${errorMessage.alreadyExists}`);
 };
 
 const registerCnpjService = async ({ cnpj, blockListed }) => {
@@ -35,7 +36,7 @@ const editCnpjService = async (cnpjToEdit, blockListedStatus) => {
 
   const editedCnpj = await editCnpjModel(cnpjToEdit, blockListedStatus);
 
-  if (editedCnpj === null) errorThrow(NOT_FOUND, 'CNPJ não encontrado');
+  if (editedCnpj === null) errorThrow(NOT_FOUND, `CNPJ ${errorMessage.notFound}`);
   return editedCnpj;
 };
 
@@ -43,7 +44,7 @@ const removeCnpjService = async (cnpjToRemove) => {
   checkCnpjValidations(cnpjToRemove);
   const deletedCount = await removeCnpjModel(cnpjToRemove);
 
-  if (deletedCount === 0) errorThrow(NOT_FOUND, 'CNPJ não encontrado');
+  if (deletedCount === 0) errorThrow(NOT_FOUND, `CNPJ ${errorMessage.notFound}`);
 };
 
 const getAllCnpjService = async () => getAllCnpjModel();
