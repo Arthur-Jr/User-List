@@ -5,6 +5,7 @@
     "ecmaVersion": 2018
   },
   "rules": {
+    "no-console":0,
     "semi": ["error", "always"],
     "quotes": ["error", "single"],
     "import/no-extraneous-dependencies": ["error", {"devDependencies": true}]

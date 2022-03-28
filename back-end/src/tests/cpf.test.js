@@ -12,9 +12,10 @@ const {
 
 chai.use(chaiHttp);
 
-const DB_NAME = 'cpf/cnpj-validation';
+const DB_NAME = 'cpf-cnpj-list';
 const DB_COLLECTION = 'cpfs';
 const CPF_EXAMPLE = '64122484553';
+const INVALID_CPF_EXAMPLE = '27690613567';
 
 describe('Testes dos end-points relacionados ao CPF', () => {
   let connectionMock;
@@ -27,7 +28,6 @@ describe('Testes dos end-points relacionados ao CPF', () => {
 
   after(async () => {
     await connectionMock.db(DB_NAME).collection(DB_COLLECTION).deleteMany({});
-    await connectionMock.db(DB_NAME).collection(DB_COLLECTION).drop();
     MongoClient.connect.restore();
     console.log.restore();
   });
@@ -38,7 +38,7 @@ describe('Testes dos end-points relacionados ao CPF', () => {
     const registerCpf = async (cpf) => {
       response = await chai.request(server)
       .post('/cpf')
-      .send({ cpf });
+      .send({ cpf, blockListed: false });
     }
 
     describe('Quando é registrado com sucesso:', () => {
@@ -52,17 +52,20 @@ describe('Testes dos end-points relacionados ao CPF', () => {
         expect(response.body).to.be.a('object');
       });
 
-      it('Deve possuir a propriedade "cpf"', () => {
-        expect(response.body).to.have.property('cpf');
+      it('Deve possuir a propriedade "id', () => {
+        expect(response.body).to.have.property('id');
       });
 
-      it(`A propriedade "cpf" deve ser igual a ${CPF_EXAMPLE}`, () => {
-        expect(response.body.cpf).to.be.equal(CPF_EXAMPLE);
+      it(`O CPF:${CPF_EXAMPLE} deve está registrado no banco.`, async () => {
+        const { cpf: insertedCpf } = await connectionMock.db(DB_NAME)
+        .collection(DB_COLLECTION).findOne({ cpf: CPF_EXAMPLE });
+
+        expect(insertedCpf).to.be.equal(CPF_EXAMPLE);
       });
     });
 
     describe('Quando o CPF é inválido:', () => {
-      before(async () => await registerCpf('4444'));
+      before(async () => await registerCpf(INVALID_CPF_EXAMPLE));
 
       it('Deve retornar o código de status 400', () => {
         expect(response).to.have.status(BAD_REQUEST);
@@ -132,7 +135,7 @@ describe('Testes dos end-points relacionados ao CPF', () => {
     });
 
     describe('Quando o CPF é inválido:', () => {
-      before(async () => await editCpf(CPF_EXAMPLE, { cpf: '444' }));
+      before(async () => await editCpf(INVALID_CPF_EXAMPLE, { blockListed: true }));
 
       it('Deve retornar o código de status 400', () => {
         expect(response).to.have.status(BAD_REQUEST);
@@ -152,7 +155,7 @@ describe('Testes dos end-points relacionados ao CPF', () => {
     });
 
     describe('Quando o CPF não existe:', () => {
-      before(async () => await editCpf('64122484520', { blockListed: true }));
+      before(async () => await editCpf('78263704006', { blockListed: true }));
 
       it('Deve retornar o código de status 404', () => {
         expect(response).to.have.status(NOT_FOUND);
@@ -183,13 +186,25 @@ describe('Testes dos end-points relacionados ao CPF', () => {
     describe('Quando é removido com sucesso:', () => {
       before(async () => await removeCpf(CPF_EXAMPLE));
 
-      it('Deve retornar o código de status 204', () => {
-        expect(response).to.have.status(NO_CONTENT);
+      it('Deve retornar o código de status 200', () => {
+        expect(response).to.have.status(OK_STATUS);
+      });
+
+      it('Deve retornar um objeto', () => {
+        expect(response.body).to.be.a('object');
+      });
+
+      it('Deve possuir a propriedade "message"', () => {
+        expect(response.body).to.have.property('message');
+      });
+
+      it('A propriedade "message" deve ser igual a "CPF removido com sucesso"', () => {
+        expect(response.body.message).to.be.equal('CPF removido com sucesso');
       });
     });
 
     describe('Quando o CPF não existe:', () => {
-      before(async () => await removeCpf('64122484520'));
+      before(async () => await removeCpf(CPF_EXAMPLE));
 
       it('Deve retornar o código de status 404', () => {
         expect(response).to.have.status(NOT_FOUND);

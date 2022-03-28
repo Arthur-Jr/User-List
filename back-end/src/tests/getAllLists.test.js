@@ -10,9 +10,9 @@ const { OK_STATUS } = require('../utils/http_code_status');
 
 chai.use(chaiHttp);
 
-const DB_NAME = 'cpf/cnpj-validation';
+const DB_NAME = 'cpf-cnpj-list';
 const DB_COLLECTION_1 = 'cpfs';
-const DB_COLLECTION_2 = 'cpnjs';
+const DB_COLLECTION_2 = 'cnpjs';
 
 describe('Testes da consulta de CPF e CNPJ', () => {
   let connectionMock;
@@ -25,9 +25,7 @@ describe('Testes da consulta de CPF e CNPJ', () => {
 
   after(async () => {
     await connectionMock.db(DB_NAME).collection(DB_COLLECTION_1).deleteMany({});
-    await connectionMock.db(DB_NAME).collection(DB_COLLECTION_1).drop();
     await connectionMock.db(DB_NAME).collection(DB_COLLECTION_2).deleteMany({});
-    await connectionMock.db(DB_NAME).collection(DB_COLLECTION_2).drop();
     MongoClient.connect.restore();
     console.log.restore();
   });
