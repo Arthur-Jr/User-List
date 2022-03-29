@@ -5,6 +5,7 @@ import * as validator from 'cpf-cnpj-validator';
 import registerData from '../api/register-cpf-cnpj';
 import RadioInputsSection from '../components/RadioInputsSection.jsx';
 import TextInputSection from '../components/TextInputSection.jsx';
+import '../CSS/registerPage.scss';
 
 function RegisterCpfCpnj() {
   const [radioValue, setRadioValue] = useState('cpf');
@@ -51,31 +52,33 @@ function RegisterCpfCpnj() {
   };
 
   return (
-    <main>
-      <h1>Registrar CPF/CNPJ</h1>
+    <main className="register-main">
+      <section className="main-section">
+        <h1 className="title">Registrar CPF/CNPJ</h1>
 
-      <form onSubmit={ handleSubmit }>
-        <RadioInputsSection setRadioValue={ setRadioValue } />
+        <form onSubmit={ handleSubmit }>
+          <RadioInputsSection setRadioValue={ setRadioValue } />
 
-        <TextInputSection
-          textInputValue={ textInputValue }
-          radioValue={ radioValue }
-          handleInputTextChange={ handleInputTextChange }
-          blockStatus={ blockStatus }
-          setBlockStatus={ setBlockStatus }
-        />
-        { responseMessage.length !== 0
-        && <span data-testid="response-message">{ responseMessage }</span> }
+          <TextInputSection
+            textInputValue={ textInputValue }
+            radioValue={ radioValue }
+            handleInputTextChange={ handleInputTextChange }
+            blockStatus={ blockStatus }
+            setBlockStatus={ setBlockStatus }
+          />
+          { responseMessage.length !== 0
+          && <span data-testid="response-message">{ responseMessage }</span> }
 
-        <button
-          type="submit"
-          disabled={ btnStatus }
-        >
-          Registrar
-        </button>
-      </form>
+          <button
+            type="submit"
+            disabled={ btnStatus }
+          >
+            Registrar
+          </button>
+        </form>
 
-      <Link to="/">Consultar CPF/CNPJ</Link>
+        <Link to="/">Consultar CPF/CNPJ</Link>
+      </section>
     </main>
   );
 }

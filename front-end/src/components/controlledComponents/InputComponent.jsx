@@ -6,7 +6,7 @@ function InputComponent({
   type, maxLength, value, handle, text, placeholder, name, id, checked,
 }) {
   return (
-    <label htmlFor={id}>
+    <label htmlFor={id} className={`${name}-label`}>
       <input
         id={id}
         name={name}
@@ -15,7 +15,7 @@ function InputComponent({
         value={ value }
         onChange={ handle }
         placeholder={ placeholder }
-        checked={ checked }
+        defaultChecked={ checked }
       />
       {text}
     </label>

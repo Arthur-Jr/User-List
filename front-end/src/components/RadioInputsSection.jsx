@@ -7,8 +7,8 @@ function RadioInputsSection({ setRadioValue, registerPage }) {
   const displayAllOptions = () => (
     <InputComponent
       type="radio"
-      id="cpf/cnpj-radio"
-      name="CPF/CNPJ-radio"
+      id="cpf-cnpj-radio"
+      name="CPF-CNPJ-radio"
       value="cpf/cnpj"
       handle={ ({ target }) => setRadioValue(target.value) }
       text="CPF/CNPJ"
@@ -17,11 +17,11 @@ function RadioInputsSection({ setRadioValue, registerPage }) {
   );
 
   return (
-    <section>
+    <section className="radio-section">
       <InputComponent
         type="radio"
         id="cpf-radio"
-        name="CPF/CNPJ-radio"
+        name="CPF-CNPJ-radio"
         value="cpf"
         handle={ ({ target }) => setRadioValue(target.value) }
         text="CPF"
@@ -31,7 +31,7 @@ function RadioInputsSection({ setRadioValue, registerPage }) {
       <InputComponent
         type="radio"
         id="cnpj-radio"
-        name="CPF/CNPJ-radio"
+        name="CPF-CNPJ-radio"
         value="cnpj"
         handle={ ({ target }) => setRadioValue(target.value) }
         text="CNPJ"

@@ -7,7 +7,7 @@ function TextInputSection({
   textInputValue, radioValue, handleInputTextChange, blockStatus, setBlockStatus,
 }) {
   return (
-    <section>
+    <section className="textInput-section">
       <InputComponent
         type="text"
         maxLength={ radioValue === 'cpf' ? 11 : 14 }
