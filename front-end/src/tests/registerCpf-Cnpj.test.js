@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import { act } from 'react-dom/test-utils';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
@@ -11,8 +12,12 @@ jest.mock('axios');
 const CPF_EXAMPLE = '19011164091';
 const CNPJ_EXAMPLE = '97384662000144';
 
-const axiosPostMock = (returnValue) => {
+const axiosPostMockResolved = (returnValue) => {
   axios.post.mockResolvedValue(returnValue);
+};
+
+const axiosPostMockRejected = (returnValue) => {
+  axios.post.mockRejectedValue(returnValue);
 };
 
 afterAll(() => {
@@ -21,7 +26,7 @@ afterAll(() => {
 
 describe('Testes da página de registro de CPF/CNPJ:', () => {
   describe('Testa se os elementos estão presentes na tela:', () => {
-    beforeAll(() => {
+    beforeEach(() => {
       renderWithRouter(<App />, { route: '/register-cpf-cnpj' });
     });
 
@@ -34,6 +39,7 @@ describe('Testes da página de registro de CPF/CNPJ:', () => {
       const cpfRadio = screen.getByLabelText('CPF');
       const cnpjRadio = screen.getByLabelText('CNPJ');
       expect(cpfRadio).toBeInTheDocument();
+      expect(cpfRadio.checked).toBe(true);
       expect(cnpjRadio).toBeInTheDocument();
     });
 
@@ -67,50 +73,55 @@ describe('Testes da página de registro de CPF/CNPJ:', () => {
 
       test('Quando o CPF é Inválido', () => {
         const textInput = screen.getByPlaceholderText('CPF/CNPJ');
-        const button =  screen.getByRole('button', { name: /registrar/i });
         userEvent.type(textInput, '67357');
+        const button = screen.getByRole('button', { name: /registrar/i });
 
         const erroMessage = screen.getByTestId('response-message');
         expect(erroMessage).toBeInTheDocument();
-        expect(erroMessage.innerText).toBe('CPF inválido');
+        expect(erroMessage.innerHTML).toBe('CPF inválido');
         expect(button.disabled).toBe(true);
       });
 
-      test('Quando o CPF é Valido', () => {
-        axiosPostMock({ status: 201, data: { id: 'abc' } });
+      test('Quando o CPF é Valido', async () => {
+        axiosPostMockResolved({ data: { id: 'abc' } });
         const textInput = screen.getByPlaceholderText('CPF/CNPJ');
-        let button =  screen.getByRole('button', { name: /registrar/i });
+        let button = screen.getByRole('button', { name: /registrar/i });
 
         expect(button.disabled).toBe(true);
         userEvent.type(textInput, CPF_EXAMPLE);
 
-        let responseMessage = screen.getByTestId('response-message');
-        expect(responseMessage).not.toBeInTheDocument();
+        let responseMessage = screen.queryByTestId('response-message');
+        expect(responseMessage).toBe(null);
 
         button = screen.getByRole('button', { name: /registrar/i });
         expect(button.disabled).toBe(false);
-        userEvent.click(button);
+        await act(async () => {
+          userEvent.click(button);
+        });
 
         responseMessage = screen.getByTestId('response-message');
         expect(responseMessage).toBeInTheDocument();
-        expect(responseMessage).toBe('CPF registrado com sucesso');
+        expect(responseMessage.innerHTML).toBe('CPF registrado com sucesso');
         setTimeout(() => {
           expect(responseMessage).not.toBeInTheDocument();
         }, 6000);
       });
 
-      test('Quando o CPF é valido mas já está registrado', () => {
-        axiosPostMock({ status: 409, data: { message: 'CPF Já registrado' } });
+      test('Quando o CPF é valido mas já está registrado', async () => {
+        axiosPostMockRejected({ response: { data: { message: 'CPF Já registrado' } } });
         const textInput = screen.getByPlaceholderText('CPF/CNPJ');
         userEvent.type(textInput, CPF_EXAMPLE);
 
-        const button =  screen.getByRole('button', { name: /registrar/i });
+        const button = screen.getByRole('button', { name: /registrar/i });
         expect(button.disabled).toBe(false);
-        userEvent.click(button);
+        await act(async () => {
+          userEvent.click(button);
+        });
 
         const responseMessage = screen.getByTestId('response-message');
+        console.log(responseMessage);
         expect(responseMessage).toBeInTheDocument();
-        expect(responseMessage).toBe('CPF Já registrado');
+        expect(responseMessage.innerHTML).toBe('CPF Já registrado');
       });
     });
 
@@ -124,56 +135,60 @@ describe('Testes da página de registro de CPF/CNPJ:', () => {
         userEvent.click(cnpjRadio);
 
         const textInput = screen.getByPlaceholderText('CPF/CNPJ');
-        const button =  screen.getByRole('button', { name: /registrar/i });
+        const button = screen.getByRole('button', { name: /registrar/i });
         userEvent.type(textInput, '67357');
 
         const erroMessage = screen.getByTestId('response-message');
         expect(erroMessage).toBeInTheDocument();
-        expect(erroMessage.innerText).toBe('CNPJ inválido');
+        expect(erroMessage.innerHTML).toBe('CNPJ inválido');
         expect(button.disabled).toBe(true);
       });
 
-      test('Quando o CNPJ é Valido', () => {
-        axiosPostMock({ status: 201, data: { id: 'abc' } });
+      test('Quando o CNPJ é Valido', async () => {
+        axiosPostMockResolved({ data: { id: 'abc' } });
         const cnpjRadio = screen.getByLabelText('CNPJ');
         userEvent.click(cnpjRadio);
 
         const textInput = screen.getByPlaceholderText('CPF/CNPJ');
-        let button =  screen.getByRole('button', { name: /registrar/i });
+        let button = screen.getByRole('button', { name: /registrar/i });
 
         expect(button.disabled).toBe(true);
         userEvent.type(textInput, CNPJ_EXAMPLE);
 
-        let responseMessage = screen.getByTestId('response-message');
-        expect(responseMessage).not.toBeInTheDocument();
+        let responseMessage = screen.queryByTestId('response-message');
+        expect(responseMessage).toBe(null);
 
         button = screen.getByRole('button', { name: /registrar/i });
         expect(button.disabled).toBe(false);
-        userEvent.click(button);
+        await act(async () => {
+          userEvent.click(button);
+        });
 
         responseMessage = screen.getByTestId('response-message');
         expect(responseMessage).toBeInTheDocument();
-        expect(responseMessage).toBe('CNPJ registrado com sucesso');
+        expect(responseMessage.innerHTML).toBe('CNPJ registrado com sucesso');
         setTimeout(() => {
           expect(responseMessage).not.toBeInTheDocument();
         }, 6000);
       });
 
-      test('Quando o CNPJ é valido mas já está registrado', () => {
-        axiosPostMock({ status: 409, data: { message: 'CNPJ Já registrado' } });
+      test('Quando o CNPJ é valido mas já está registrado', async () => {
+        axiosPostMockRejected({ response: { data: { message: 'CNPJ Já registrado' } } });
         const cnpjRadio = screen.getByLabelText('CNPJ');
         userEvent.click(cnpjRadio);
 
         const textInput = screen.getByPlaceholderText('CPF/CNPJ');
         userEvent.type(textInput, CNPJ_EXAMPLE);
 
-        const button =  screen.getByRole('button', { name: /registrar/i });
+        const button = screen.getByRole('button', { name: /registrar/i });
         expect(button.disabled).toBe(false);
-        userEvent.click(button);
+        await act(async () => {
+          userEvent.click(button);
+        });
 
         const responseMessage = screen.getByTestId('response-message');
         expect(responseMessage).toBeInTheDocument();
-        expect(responseMessage).toBe('CNPJ Já registrado');
+        expect(responseMessage.innerHTML).toBe('CNPJ Já registrado');
       });
     });
 
