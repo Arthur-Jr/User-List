@@ -67,7 +67,7 @@ describe('Testes da página de registro de CPF/CNPJ:', () => {
 
       test('Quando o CPF é Inválido', () => {
         const textInput = screen.getByPlaceholderText('CPF/CNPJ');
-        const button =  screen.getByRole('button', { name: /registrar/i });
+        const button = screen.getByRole('button', { name: /registrar/i });
         userEvent.type(textInput, '67357');
 
         const erroMessage = screen.getByTestId('response-message');
@@ -79,7 +79,7 @@ describe('Testes da página de registro de CPF/CNPJ:', () => {
       test('Quando o CPF é Valido', () => {
         axiosPostMock({ status: 201, data: { id: 'abc' } });
         const textInput = screen.getByPlaceholderText('CPF/CNPJ');
-        let button =  screen.getByRole('button', { name: /registrar/i });
+        let button = screen.getByRole('button', { name: /registrar/i });
 
         expect(button.disabled).toBe(true);
         userEvent.type(textInput, CPF_EXAMPLE);
@@ -104,7 +104,7 @@ describe('Testes da página de registro de CPF/CNPJ:', () => {
         const textInput = screen.getByPlaceholderText('CPF/CNPJ');
         userEvent.type(textInput, CPF_EXAMPLE);
 
-        const button =  screen.getByRole('button', { name: /registrar/i });
+        const button = screen.getByRole('button', { name: /registrar/i });
         expect(button.disabled).toBe(false);
         userEvent.click(button);
 
@@ -124,7 +124,7 @@ describe('Testes da página de registro de CPF/CNPJ:', () => {
         userEvent.click(cnpjRadio);
 
         const textInput = screen.getByPlaceholderText('CPF/CNPJ');
-        const button =  screen.getByRole('button', { name: /registrar/i });
+        const button = screen.getByRole('button', { name: /registrar/i });
         userEvent.type(textInput, '67357');
 
         const erroMessage = screen.getByTestId('response-message');
@@ -139,7 +139,7 @@ describe('Testes da página de registro de CPF/CNPJ:', () => {
         userEvent.click(cnpjRadio);
 
         const textInput = screen.getByPlaceholderText('CPF/CNPJ');
-        let button =  screen.getByRole('button', { name: /registrar/i });
+        let button = screen.getByRole('button', { name: /registrar/i });
 
         expect(button.disabled).toBe(true);
         userEvent.type(textInput, CNPJ_EXAMPLE);
@@ -167,7 +167,7 @@ describe('Testes da página de registro de CPF/CNPJ:', () => {
         const textInput = screen.getByPlaceholderText('CPF/CNPJ');
         userEvent.type(textInput, CNPJ_EXAMPLE);
 
-        const button =  screen.getByRole('button', { name: /registrar/i });
+        const button = screen.getByRole('button', { name: /registrar/i });
         expect(button.disabled).toBe(false);
         userEvent.click(button);
 
