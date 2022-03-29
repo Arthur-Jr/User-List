@@ -1,5 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
-import RegisterCpfCpnj from './pages/register-cpf-cnpj';
+import RegisterCpfCpnj from './pages/register-cpf-cnpj.jsx';
 
 function App() {
   return (
