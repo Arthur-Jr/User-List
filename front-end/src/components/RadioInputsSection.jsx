@@ -12,12 +12,14 @@ function RadioInputsSection({ setRadioValue, registerPage }) {
       value="cpf/cnpj"
       handle={ ({ target }) => setRadioValue(target.value) }
       text="CPF/CNPJ"
-      checked={ registerPage }
+      checked={ !registerPage }
     />
   );
 
   return (
     <section className="radio-section">
+      {!registerPage && displayAllOptions()}
+
       <InputComponent
         type="radio"
         id="cpf-radio"
@@ -36,8 +38,6 @@ function RadioInputsSection({ setRadioValue, registerPage }) {
         handle={ ({ target }) => setRadioValue(target.value) }
         text="CNPJ"
       />
-
-      {!registerPage && displayAllOptions()}
     </section>
   );
 }
