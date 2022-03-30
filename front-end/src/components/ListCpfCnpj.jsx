@@ -11,11 +11,11 @@ function ListCpfCnpj({ arrayToDisplay, handleEdit, handleRemove }) {
         const cpfOrCnpj = cpf || cnpj;
         const displayFormat = cpf ? cpfValidator.format(cpf) : cnpjValidator.format(cnpj);
         return (
-          <div key={ cpfOrCnpj } className="cpf-cnpj-card">
+          <div key={ cpfOrCnpj } className="cpf-cnpj-card" data-testid="card-div">
             <h4>{`${cpf ? 'CPF' : 'CNPJ'}: ${displayFormat}`}</h4>
 
               <InputComponent
-                id="edit-checkbox"
+                id={ cpfOrCnpj }
                 name="edit-checkbox"
                 type="checkbox"
                 value={ cpfOrCnpj }
