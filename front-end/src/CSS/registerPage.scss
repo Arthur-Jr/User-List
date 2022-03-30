@@ -1,7 +1,7 @@
 @import '../CSS/app.scss';
 
 .register-main {
-  height: 665px;
+  height: 100%;
   width: 100%;
   
   .main-section {
@@ -101,6 +101,7 @@
     @include flex(column, center, center);
   
     background-color: aliceblue;
+    height: 670px;
     
     .main-section {
       border: double;
