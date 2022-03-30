@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import getAllCpfCnpj from '../api/getAll-cpf-cnpj';
 import editCpfCnpj from '../api/edit-cpf-cnpj';
 import removeCpfCnpj from '../api/remove-cpf-cnpj';
+import getServerStatus from '../api/getServerStatus';
 import RadioInputsSection from '../components/RadioInputsSection.jsx';
 import TextInputSection from '../components/TextInputSection.jsx';
 import sortList from '../utils/sortList';
@@ -88,6 +89,13 @@ function ConsultCpfCnpj() {
     setMessageWithTime(message, setResponseMessage, 5000);
   };
 
+  // Checa o status do server:
+  const handleServeButtonClick = async () => {
+    const message = await getServerStatus();
+    // eslint-disable-next-line no-alert
+    alert(message);
+  };
+
   return (
   <main className="consult-main">
     <section className="main-section">
@@ -112,6 +120,11 @@ function ConsultCpfCnpj() {
       { responseMessage.length !== 0
       && <span data-testid="response-message" className="message">{ responseMessage }</span> }
     </section>
+    <button
+      type="button"
+      className="server-btn"
+      onClick={ handleServeButtonClick }
+    >Server status</button>
   </main>
   );
 }
