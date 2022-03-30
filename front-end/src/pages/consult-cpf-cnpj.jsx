@@ -9,6 +9,7 @@ import TextInputSection from '../components/TextInputSection.jsx';
 import sortList from '../utils/sortList';
 import ListCpfCnpj from '../components/ListCpfCnpj.jsx';
 import setMessageWithTime from '../utils/setMessageWithTimer';
+import '../CSS/consultPage.scss';
 
 function ConsultCpfCnpj() {
   const [allCpfCnpj, setAllCpfCnpj] = useState({ cpf: [], cnpj: [] });
@@ -89,25 +90,28 @@ function ConsultCpfCnpj() {
 
   return (
   <main className="consult-main">
-    <RadioInputsSection setRadioValue={ setRadioValue } registerPage={ false } />
-    <TextInputSection
-      textInputValue={ textInputValue }
-      radioValue={ radioValue }
-      handleInputTextChange={ handleInputTextChange }
-      blockStatus={ blockStatus }
-      setBlockStatus={ setBlockStatus }
-    />
+    <section className="main-section">
+      <section className="filter-section">
+        <RadioInputsSection setRadioValue={ setRadioValue } registerPage={ false } />
+        <TextInputSection
+          textInputValue={ textInputValue }
+          radioValue={ radioValue }
+          handleInputTextChange={ handleInputTextChange }
+          blockStatus={ blockStatus }
+          setBlockStatus={ setBlockStatus }
+        />
+      <Link to="/register-cpf-cnpj">Adicionar novo CPF/CNPJ</Link>
+      </section>
 
-    <Link to="/register-cpf-cnpj">Adicionar novo CPF/CNPJ</Link>
+      <ListCpfCnpj
+        arrayToDisplay={ arrayToDisplay }
+        handleEdit={ handleEdit }
+        handleRemove={ handleRemove }
+      />
 
-    <ListCpfCnpj
-      arrayToDisplay={ arrayToDisplay }
-      handleEdit={ handleEdit }
-      handleRemove={ handleRemove }
-    />
-
-    { responseMessage.length !== 0
-    && <span data-testid="response-message">{ responseMessage }</span> }
+      { responseMessage.length !== 0
+      && <span data-testid="response-message" className="message">{ responseMessage }</span> }
+    </section>
   </main>
   );
 }

@@ -6,7 +6,7 @@ import InputComponent from './controlledComponents/InputComponent.jsx';
 
 function ListCpfCnpj({ arrayToDisplay, handleEdit, handleRemove }) {
   return (
-    <section>
+    <section className="cpf-cnpj-list-section">
       {arrayToDisplay.map(({ cpf, cnpj, blockListed }) => {
         const cpfOrCnpj = cpf || cnpj;
         const displayFormat = cpf ? cpfValidator.format(cpf) : cnpjValidator.format(cnpj);
