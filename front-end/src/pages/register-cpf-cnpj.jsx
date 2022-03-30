@@ -5,6 +5,7 @@ import * as validator from 'cpf-cnpj-validator';
 import registerData from '../api/register-cpf-cnpj';
 import RadioInputsSection from '../components/RadioInputsSection.jsx';
 import TextInputSection from '../components/TextInputSection.jsx';
+import setMessageWithTime from '../utils/setMessageWithTimer';
 import '../CSS/registerPage.scss';
 
 function RegisterCpfCpnj() {
@@ -45,10 +46,9 @@ function RegisterCpfCpnj() {
       blockListed: blockStatus,
     };
     const message = await registerData(dataToRegister, radioValue);
-    setResponseMessage(message);
 
     const FIVE_SECONDS = 5000;
-    setTimeout(() => setResponseMessage(''), FIVE_SECONDS);
+    setMessageWithTime(message, setResponseMessage, FIVE_SECONDS);
   };
 
   return (

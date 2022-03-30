@@ -48,7 +48,6 @@
         width: 100%;
 
         .text-input-label {
-          height: 30px;
           flex-grow: 1;
           width: 100%;
 
@@ -63,11 +62,12 @@
 
           @include flex(row, center, center);
 
+          font-size: 1.5em;
           height: 10px;
           width: 20vw;
           #block-checkbox {
             margin-right: 10px;
-            transform: scale(1.8);
+            transform: scale(2);
           }
         }
       }
@@ -96,12 +96,13 @@
   }
 }
 
-@media screen and ( min-width : 530px ) {
+@media screen and ( min-width : 550px ) {
   .register-main {
 
     @include flex(column, center, center);
   
     background-color: aliceblue;
+    height: 670px;
     
     .main-section {
       border: double;
@@ -144,16 +145,20 @@
   }
 }
 
-@media screen and ( min-width : 750px ) {
+@media screen and ( min-width : 800px ) {
 
   .register-main {
 
     .main-section {
+
+      @include flex(column, center, space-around);
+
       height: 50%;
       width: 60%;
 
       form {  
         .radio-section {
+          height: 100%;
           width: 30%;
         }
   
