@@ -1,0 +1,177 @@
+@import '../CSS/app.scss';
+
+.consult-main {
+
+  @include flex(column, center, space-evenly);
+
+  height: 100%;
+  width: 100%;
+
+  .main-section {
+
+    @include flex(column, center, space-between);
+
+    background-color: rgb(173, 170, 170);
+    height: 100%;
+    width: 100%;
+    padding: 15px;
+
+    .filter-section {
+
+      @include flex(column, center, space-around);
+
+      height: 40%;
+      width: 100%;
+
+      .radio-section {
+
+        @include flex(row, center, space-between);
+
+        width: 80%;
+
+        .CPF-CNPJ-radio-label {
+
+          @include flex(row, center, center);
+
+          width: 30vw;
+
+          input {
+            transform: scale(1.8);
+            margin-right: 10px;
+          }
+        }
+      }
+
+      .textInput-section {
+
+        @include flex(column, center, center);
+
+        width: 100%;
+        margin: 15px 0 10px;
+
+        .text-input-label {
+
+          @include flex(column, center, center);
+
+          margin-bottom: 15px;
+          width: 100%;
+
+          #text-input {
+            height: 100%;
+            width: 90%;
+            padding: 15px;
+          }
+        }
+
+        .block-checkbox-label {
+
+          #block-checkbox {
+            margin-right: 10px;
+            transform: scale(1.8);
+          }
+        }
+      }
+    }
+
+    .cpf-cnpj-list-section {
+      
+      @include flex(column, center, flex-start);
+
+      margin-top: 20px;
+      height: 80%;
+      overflow: auto;
+      width: 100%;
+
+      .cpf-cnpj-card {
+
+        @include flex(row, center, space-between);
+
+        background-color: aliceblue;
+        border: 1px solid black;
+        font-size: 3vw;
+        padding: 10px;
+        width: 100%;
+
+        h4 {
+          width: 100%;
+          font-size: 3vw;
+        }
+
+        label {
+          @include flex(row, center, flex-end);
+
+          margin-right: 25px;
+
+          input {
+            margin-right: 5px;
+            transform: scale(1.3);
+          }
+        }
+
+        button {
+          padding: 5px;
+        }
+      }
+    }
+
+    .message {
+      background-color: rgba(15, 15, 15, 0.822);
+      color: white;
+      position: absolute;
+      padding: 10px;
+      top: 210px;
+    }
+  }
+}
+
+@media screen and ( min-width : 800px ) {
+
+  .consult-main {
+    height: 675px;
+  
+    .main-section {
+
+      .filter-section {
+        width: 50%;
+      }
+  
+      .cpf-cnpj-list-section {
+        width: 70%;
+  
+        .cpf-cnpj-card {
+          font-size: 1.2em;
+          padding: 15px;
+  
+          h4 {
+            font-size: 1.2em;
+          }
+  
+          label {
+            @include flex(row, center, center);
+  
+            flex-grow: 1;
+            margin-right: 0;
+            width: 100%;
+  
+            &:hover {
+              cursor: pointer;
+            }
+
+            input {
+              margin-right: 10px;
+              transform: scale(1.7);
+            }
+          }
+  
+          button {
+            padding: 10px;
+
+            &:hover {
+              cursor: pointer;
+            }
+          }
+        }
+      }
+    }
+  }
+}
