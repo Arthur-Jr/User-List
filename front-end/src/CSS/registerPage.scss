@@ -48,7 +48,6 @@
         width: 100%;
 
         .text-input-label {
-          height: 30px;
           flex-grow: 1;
           width: 100%;
 
@@ -149,11 +148,15 @@
   .register-main {
 
     .main-section {
-      height: 50%;
+
+      @include flex(column, center, space-around);
+
+      height: 67%;
       width: 60%;
 
       form {  
         .radio-section {
+          height: 100%;
           width: 30%;
         }
   
