@@ -62,11 +62,12 @@
 
           @include flex(row, center, center);
 
+          font-size: 1.5em;
           height: 10px;
           width: 20vw;
           #block-checkbox {
             margin-right: 10px;
-            transform: scale(1.8);
+            transform: scale(2);
           }
         }
       }
@@ -95,7 +96,7 @@
   }
 }
 
-@media screen and ( min-width : 530px ) {
+@media screen and ( min-width : 550px ) {
   .register-main {
 
     @include flex(column, center, center);
@@ -144,7 +145,7 @@
   }
 }
 
-@media screen and ( min-width : 750px ) {
+@media screen and ( min-width : 800px ) {
 
   .register-main {
 
