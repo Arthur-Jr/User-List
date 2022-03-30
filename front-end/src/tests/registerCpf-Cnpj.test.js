@@ -119,7 +119,7 @@ describe('Testes da página de registro de CPF/CNPJ:', () => {
         });
 
         const responseMessage = screen.getByTestId('response-message');
-        console.log(responseMessage);
+
         expect(responseMessage).toBeInTheDocument();
         expect(responseMessage.innerHTML).toBe('CPF Já registrado');
       });
