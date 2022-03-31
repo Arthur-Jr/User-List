@@ -50,13 +50,13 @@ cd neoway-teste/back-end && npm install
   Na Raiz do projeto:
 
   ```bash
-  cd npm run compose:up
+  npm run compose:up
   ``` 
 
   Para parar aplicação
 
   ```bash
-  cd npm run compose:down
+  npm run compose:down
   ```
 
   <br>
