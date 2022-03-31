@@ -41,10 +41,16 @@ const getAllCnpjModel = async () => {
   return cnpjArray;
 };
 
+const insertManyCnpjModel = async (toInsert) => {
+  const db = await connection();
+  await db.collection(COLLECTION_NAME).insertMany(toInsert);
+};
+
 module.exports = {
   registerCnpjModel,
   getCnpjByCnpjModel,
   editCnpjModel,
   removeCnpjModel,
   getAllCnpjModel,
+  insertManyCnpjModel,
 };
