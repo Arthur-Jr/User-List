@@ -11,7 +11,7 @@ Front-end:
 
 Back-end:
   - JavaScript
-  - Node.js
+  - Node.js(MSC)
   - Express
   - MongoDB
   - Tests(Mocha, Sinon, Chai)
