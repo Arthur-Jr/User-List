@@ -24,22 +24,24 @@ Back-end:
 Copie e cole em seu terminal:
 
 ```
-git clone git@github.com:Arthur-Jr/neoway-teste.git
+git clone git@github.com:Arthur-Jr/neoway-teste.git && cd neoway-teste/
 ```
 
 <br>
+
+## Todos os comandos abaixo precisam ser executados na raiz do projeto!
 
 ## Instalando Dependências
   - Essa parte não é nescessaria se for rodar com docker!
 
 Front-end:
 ```bash
-cd neoway-teste/front-end && npm install
+cd front-end/ && npm install
 ``` 
 
 Back-end:
 ```bash
-cd neoway-teste/back-end && npm install
+cd back-end/ && npm install
 ``` 
 
 <br>
@@ -65,12 +67,12 @@ cd neoway-teste/back-end && npm install
 
   Front-end:
   ```bash
-  cd neoway-teste/front-end && npm start
+  cd front-end/ && npm start
   ``` 
 
   Back-end:
   ```bash
-  cd neoway-teste/back-end && npm start
+  cd back-end/ && npm start
   ``` 
 
 <br>
@@ -82,12 +84,12 @@ cd neoway-teste/back-end && npm install
 
   Front-end:
   ```bash
-  cd neoway-teste/front-end && npm test
+  cd front-end/ && npm test
   ``` 
 
   Back-end:
 
   É nescessario que a porta 3001 esteja livre para rodar o test do back-end, então nem o docker nem o npm start podem estar ativos. 
   ```bash
-  cd neoway-teste/back-end && npm test
+  cd back-end/ && npm test
   ``` 
