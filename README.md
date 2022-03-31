@@ -54,6 +54,9 @@ cd back-end/ && npm install
   - back: 3001:3001
   - mongo: 3002:27017 
 
+  <br>
+  Iniciando o app:
+  
   ```bash
   npm run compose:up
   ``` 
@@ -61,7 +64,7 @@ cd back-end/ && npm install
   A aplicação vai estar rodando no link http://localhost:3000/
 
   <br>
-  Para parar aplicação
+  Para parar o app:
 
   ```bash
   npm run compose:down
