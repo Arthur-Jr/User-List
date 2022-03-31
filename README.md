@@ -49,12 +49,18 @@ cd back-end/ && npm install
 ## Executando aplicação
   ### Com Docker:
 
-  Na Raiz do projeto:
+  Portas do docker:
+  - front: 3000:3000
+  - back: 3001:3001
+  - mongo: 3002:27017 
 
   ```bash
   npm run compose:up
   ``` 
 
+  A aplicação vai estar rodando no link http://localhost:3000/
+
+  <br>
   Para parar aplicação
 
   ```bash
@@ -65,14 +71,18 @@ cd back-end/ && npm install
 
   ### Sem Docker:
 
-  Front-end:
-  ```bash
-  cd front-end/ && npm start
-  ``` 
-
   Back-end:
+    
+  - O MongoDb deve está ativo para o back-end funcionar!
+
   ```bash
   cd back-end/ && npm start
+  ``` 
+
+  Front-end:
+
+  ```bash
+  cd front-end/ && npm start
   ``` 
 
 <br>
