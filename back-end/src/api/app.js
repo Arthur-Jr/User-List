@@ -11,6 +11,7 @@ const {
   setServerStatusController,
   getServerStatusController,
 } = require('../msc-layers/controllers/serverStatus.controller');
+const insertOnStart = require('../utils/insertOnStart');
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -28,6 +29,7 @@ app.get('/cpf-cnpj-lists', getAllCpfCnpjList); /* Consulta de todos CPF/CNPJ */
 
 app.use(errorMiddleware);
 
+insertOnStart(); /* Se o BD estive vazio ele é populado */
 setServerStatusController(); /* Salva a data em que o server foi iniciado */
 app.listen(port, async () => console.log(`Example app listening on port ${port}!`));
 
