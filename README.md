@@ -58,7 +58,7 @@ cd back-end/ && npm install
   Iniciando o app:
   
   ```bash
-  npm run compose:up
+  make compose-up
   ``` 
 
   A aplicação vai estar rodando no link http://localhost:3000/
@@ -67,7 +67,7 @@ cd back-end/ && npm install
   Para parar o app:
 
   ```bash
-  npm run compose:down
+  make compose-down
   ```
 
   <br>
