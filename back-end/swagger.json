@@ -26,6 +26,10 @@
           "blockListed": {
             "type": "boolean"
           }
+        },
+        "example": {
+          "cpf": "93473544060",
+          "blockListed": false
         }
       },
       "payloadToEdit": {
@@ -45,6 +49,10 @@
           "blockListed": {
             "type": "boolean"
           }
+        },
+        "example": {
+          "cnpj": "77613036000175",
+          "blockListed": false
         }
       }
     }
@@ -60,14 +68,6 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/cpfToAdd"
-              },
-              "examples": {
-                "CPF": {
-                  "value": {
-                    "cpf": "93473544060",
-                    "blockListed": false
-                  }
-                }
               }
             }
           }
@@ -245,14 +245,6 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/cnpjToAdd"
-              },
-              "examples": {
-                "CNPJ": {
-                  "value": {
-                    "cnpj": "77613036000175",
-                    "blockListed": false
-                  }
-                }
               }
             }
           }
@@ -414,6 +406,29 @@
                     "message": "CNPJ não encontrado"
                   }
                 }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cpf-cnpj-lists": {
+      "get": {
+        "summary": "Lista do CPF/CNPJ",
+        "description": "Essa rota é responsável por pegar a lista de CPF/CNPJ",
+        "tags": ["Listar CPF/CNPJ"],
+        "responses": {
+          "200": {
+            "description": "CPF/CNPJ listados com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array"
+                },
+                "example": [
+                  { "cpf": "93473544060", "blockListed": false },
+                  { "cnpj": "77613036000175", "blockListed": false }
+                ]
               }
             }
           }
