@@ -35,6 +35,17 @@
             "type": "boolean"
           }
         }
+      },
+      "cnpjToAdd": {
+        "type": "object",
+        "properties": {
+          "cnpj": {
+            "type": "string"
+          },
+          "blockListed": {
+            "type": "boolean"
+          }
+        }
       }
     }
   },
@@ -216,6 +227,191 @@
                   "type": "object",
                   "example": {
                     "message": "CPF não encontrado"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cnpj": {
+      "post": {
+        "summary": "Registro de CNPJ",
+        "description": "Essa rota é responsável por registro de um novo CNPJ",
+        "tags": ["CNPJ"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/cnpjToAdd"
+              },
+              "examples": {
+                "CNPJ": {
+                  "value": {
+                    "cnpj": "77613036000175",
+                    "blockListed": false
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "CNPJ Registrado com sucesso",
+            "content": {
+              "application/json": {
+                "type": "object",
+                "example": {
+                  "id": "626b051fa7a1d8e98c3198e0"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CNPJ já está registrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "message": "CNPJ Já registrado"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Payload com dados inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "message": "CNPJ inválido"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cnpj/{cnpj}": {
+      "put": {
+        "summary": "Edição do status do CNPJ",
+        "description": "Essa rota é responsável pela edição do status do CNPJ",
+        "tags": ["CNPJ"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/payloadToEdit"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "cnpj",
+            "in": "path",
+            "description": "CNPJ que será editado",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "CNPJ editado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/cnpjToAdd"
+                },
+                "examples": {
+                  "CNPJ": {
+                    "value": {
+                      "cnpj": "77613036000175",
+                      "blockListed": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Payload com dados inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "message": "CNPJ inválido"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "CNPJ não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "message": "CNPJ não encontrado"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Remoção do CNPJ",
+        "description": "Essa rota é responsável pela remoção do CNPJ",
+        "tags": ["CNPJ"],
+        "parameters": [
+          {
+            "name": "cnpj",
+            "in": "path",
+            "description": "CNPJ que será removido",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "CNPJ removido com sucesso",
+            "content": {
+              "application/json": {
+                "type": "object",
+                "example": {
+                  "message": "CNPJ removido com sucesso"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Payload com dados inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "message": "CNPJ inválido"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "CNPJ não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "message": "CNPJ não encontrado"
                   }
                 }
               }
