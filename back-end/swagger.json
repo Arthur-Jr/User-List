@@ -1,0 +1,228 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "CRUD/Validador de CPF/CNPJ",
+    "description": "Registra/Valida CPF/CNPJ",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Arthur",
+      "email": "arthurjr1906@gmail.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "",
+      "description": "Main server"
+    }
+  ],
+  "components": {
+    "schemas": {
+      "cpfToAdd": {
+        "type": "object",
+        "properties": {
+          "cpf": {
+            "type": "string"
+          },
+          "blockListed": {
+            "type": "boolean"
+          }
+        }
+      },
+      "payloadToEdit": {
+        "type": "object",
+        "properties": {
+          "blockListed": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/cpf": {
+      "post": {
+        "summary": "Registro de CPF",
+        "description": "Essa rota é responsável por registro de um novo CPF",
+        "tags": ["CPF"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/cpfToAdd"
+              },
+              "examples": {
+                "CPF": {
+                  "value": {
+                    "cpf": "93473544060",
+                    "blockListed": false
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "CPF Registrado com sucesso",
+            "content": {
+              "application/json": {
+                "type": "object",
+                "example": {
+                  "id": "626b051fa7a1d8e98c3198e0"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CPF já está registrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "message": "CPF Já registrado"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Payload com dados inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "message": "CPF inválido"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cpf/{cpf}": {
+      "put": {
+        "summary": "Edição do status do CPF",
+        "description": "Essa rota é responsável pela edição do status do CPF",
+        "tags": ["CPF"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/payloadToEdit"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "cpf",
+            "in": "path",
+            "description": "CPF que será editado",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "CPF editado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/cpfToAdd"
+                },
+                "examples": {
+                  "CPF": {
+                    "value": {
+                      "cpf": "93473544060",
+                      "blockListed": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Payload com dados inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "message": "CPF inválido"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "CPF não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "message": "CPF não encontrado"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Remoção do CPF",
+        "description": "Essa rota é responsável pela remoção do CPF",
+        "tags": ["CPF"],
+        "parameters": [
+          {
+            "name": "cpf",
+            "in": "path",
+            "description": "CPF que será removido",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "CPF removido com sucesso",
+            "content": {
+              "application/json": {
+                "type": "object",
+                "example": {
+                  "message": "CPF removido com sucesso"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Payload com dados inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "message": "CPF inválido"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "CPF não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "message": "CPF não encontrado"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
