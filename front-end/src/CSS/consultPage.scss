@@ -63,11 +63,15 @@
           }
         }
 
-        .block-checkbox-label {
+        .status-radio-label {
 
-          #block-checkbox {
-            margin-right: 10px;
-            transform: scale(1.8);
+          @include flex(row, center, center);
+
+          width: 30vw;
+
+          input {
+            transform: scale(1.6);
+            margin: 0 10px 0;
           }
         }
       }
