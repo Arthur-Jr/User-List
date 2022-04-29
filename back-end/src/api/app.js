@@ -1,7 +1,9 @@
 const bodyParser = require('body-parser');
 const express = require('express');
 const cors = require('cors');
+const swaggerUi = require('swagger-ui-express');
 
+const swaggerJson = require('../../swagger.json');
 const errorMiddleware = require('../middlewares/errorMiddleware');
 const cpfRouter = require('../msc-layers/routers/cpf.router');
 const cnpjRouter = require('../msc-layers/routers/cnpj.router');
@@ -11,6 +13,7 @@ const {
   setServerStatusController,
   getServerStatusController,
 } = require('../msc-layers/controllers/serverStatus.controller');
+const insertOnStart = require('../utils/insertOnStart');
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -26,8 +29,10 @@ app.use('/cpf', cpfRouter); /* Registro, edição e remoção de CPF */
 app.use('/cnpj', cnpjRouter); /* Registro, edição e remoção de CNPJ */
 app.get('/cpf-cnpj-lists', getAllCpfCnpjList); /* Consulta de todos CPF/CNPJ */
 
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerJson)); /* Documentação da API */
 app.use(errorMiddleware);
 
+insertOnStart(); /* Se o BD estive vazio ele é populado */
 setServerStatusController(); /* Salva a data em que o server foi iniciado */
 app.listen(port, async () => console.log(`Example app listening on port ${port}!`));
 

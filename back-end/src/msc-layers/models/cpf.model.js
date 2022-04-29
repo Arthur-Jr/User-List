@@ -41,10 +41,16 @@ const getAllCpfModel = async () => {
   return cpfArray;
 };
 
+const insertManyCpfModel = async (toInsert) => {
+  const db = await connection();
+  await db.collection(COLLECTION_NAME).insertMany(toInsert);
+};
+
 module.exports = {
   registerCpfModel,
   getCpfByCpfModel,
   editCpfModel,
   removeCpfModel,
   getAllCpfModel,
+  insertManyCpfModel,
 };
