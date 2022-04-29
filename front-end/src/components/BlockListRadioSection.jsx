@@ -21,7 +21,7 @@ function BlockListRadioSection({ setRadioValue }) {
         name="status-radio"
         value="blocked"
         handle={ ({ target }) => setRadioValue(target.value) }
-        text="Bloqueado"
+        text="Bloqueados"
       />
 
       <InputComponent
