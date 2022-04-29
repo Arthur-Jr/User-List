@@ -4,6 +4,7 @@ import * as validator from 'cpf-cnpj-validator';
 
 import registerData from '../api/register-cpf-cnpj';
 import RadioInputsSection from '../components/RadioInputsSection.jsx';
+import InputComponent from '../components/controlledComponents/InputComponent.jsx';
 import TextInputSection from '../components/TextInputSection.jsx';
 import setMessageWithTime from '../utils/setMessageWithTimer';
 import '../CSS/registerPage.scss';
@@ -29,7 +30,6 @@ function RegisterCpfCpnj() {
     if (validationResult) setBtnStatus(false);
   }, [textInputValue, setResponseMessage, radioValue]);
 
-  // Certifica que o input de texto só vai aceitar números:
   const handleInputTextChange = ({ target: { value } }) => {
     const onlyNumberRegex = /(^[0-9]*$)|([.-]*$)/;
     if (onlyNumberRegex.test(value)) {
@@ -37,7 +37,6 @@ function RegisterCpfCpnj() {
     }
   };
 
-  // Faz a requisição para salvar o CPF/CNPJ no banco:
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -59,13 +58,22 @@ function RegisterCpfCpnj() {
         <form onSubmit={ handleSubmit }>
           <RadioInputsSection setRadioValue={ setRadioValue } />
 
-          <TextInputSection
-            textInputValue={ textInputValue }
-            radioValue={ radioValue }
-            handleInputTextChange={ handleInputTextChange }
-            blockStatus={ blockStatus }
-            setBlockStatus={ setBlockStatus }
-          />
+          <section className="textInput-section">
+            <TextInputSection
+              textInputValue={ textInputValue }
+              radioValue={ radioValue }
+              handleInputTextChange={ handleInputTextChange }
+            />
+            <InputComponent
+              type="checkbox"
+              value={ blockStatus }
+              handle={ () => setBlockStatus(!blockStatus) }
+              text="Block"
+              name="block-checkbox"
+              id="block-checkbox"
+            />
+          </section>
+
           { responseMessage.length !== 0
           && <span data-testid="response-message">{ responseMessage }</span> }
 
