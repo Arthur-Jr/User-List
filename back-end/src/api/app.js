@@ -5,15 +5,13 @@ const swaggerUi = require('swagger-ui-express');
 
 const swaggerJson = require('../../swagger.json');
 const errorMiddleware = require('../middlewares/errorMiddleware');
-const cpfRouter = require('../msc-layers/routers/cpf.router');
-const cnpjRouter = require('../msc-layers/routers/cnpj.router');
-const { getAllCpfCnpjList } = require('../msc-layers/controllers/getList.controller');
+const userListRouter = require('../msc-layers/routers/userList.router');
 const incrementReqCountController = require('../middlewares/IncrementReqCountMiddleware');
 const {
   setServerStatusController,
   getServerStatusController,
 } = require('../msc-layers/controllers/serverStatus.controller');
-const insertOnStart = require('../utils/insertOnStart');
+const insertOnStart = require('./insertOnStart');
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -22,14 +20,10 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.get('/status', getServerStatusController); /* Consultar o status do server */
-
 app.use(incrementReqCountController); /* Incrementa o número de req */
-
-app.use('/cpf', cpfRouter); /* Registro, edição e remoção de CPF */
-app.use('/cnpj', cnpjRouter); /* Registro, edição e remoção de CNPJ */
-app.get('/cpf-cnpj-lists', getAllCpfCnpjList); /* Consulta de todos CPF/CNPJ */
-
+app.use('/user-list', userListRouter); /* Registro, edição e remoção de Usuários */
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerJson)); /* Documentação da API */
+
 app.use(errorMiddleware);
 
 insertOnStart(); /* Se o BD estive vazio ele é populado */
