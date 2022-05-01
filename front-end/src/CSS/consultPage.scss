@@ -42,6 +42,26 @@
         }
       }
 
+      .sort-radio-section {
+
+        @include flex(row, center, space-between);
+        
+        margin: 20px 0 5px;
+        width: 220px;
+
+        .sort-radio-label {
+
+          @include flex(row, center, center);
+
+          width: 20vw;
+
+          input {
+            transform: scale(1.5);
+            margin: 0 10px 0;
+          }
+        }
+      }
+
       .textInput-section {
 
         @include flex(column, center, center);
@@ -63,11 +83,16 @@
           }
         }
 
-        .block-checkbox-label {
+        .status-radio-label {
 
-          #block-checkbox {
-            margin-right: 10px;
-            transform: scale(1.8);
+          @include flex(row, center, center);
+
+          margin-bottom: 20px;
+          width: 30vw;
+
+          input {
+            transform: scale(1.6);
+            margin: 0 10px 0;
           }
         }
       }
@@ -137,6 +162,10 @@
 
       .filter-section {
         width: 50%;
+
+        .sort-radio-section {
+          width: 260px;
+        }
       }
   
       .cpf-cnpj-list-section {

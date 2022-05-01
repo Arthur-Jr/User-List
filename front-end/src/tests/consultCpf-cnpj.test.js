@@ -36,7 +36,7 @@ describe('Testes da página de consulta de CPF/CNPJ:', () => {
       })
     });
 
-    test('Deve conter 3 botões radio.', () => {
+    test('Deve conter 3 botões radio para filtro de tipo.', () => {
       const cpfCnpjRadio = screen.getByLabelText('CPF/CNPJ');
       const cpfRadio = screen.getByLabelText('CPF');
       const cnpjRadio = screen.getByLabelText('CNPJ');
@@ -52,9 +52,15 @@ describe('Testes da página de consulta de CPF/CNPJ:', () => {
       expect(textInput).toBeInTheDocument();
     });
 
-    test('Deve conter um checkbox', () => {
-      const checkbox = screen.getByLabelText('Block');
-      expect(checkbox).toBeInTheDocument();
+    test('Deve conter 3 botões radio para filtro por status.', () => {
+      const allRadio = screen.getByLabelText('Todos');
+      const BlockedRadio = screen.getByLabelText('Bloqueados');
+      const ActiveRadio = screen.getByLabelText('Ativo');
+
+      expect(allRadio).toBeInTheDocument();
+      expect(allRadio.checked).toBe(true);
+      expect(BlockedRadio).toBeInTheDocument();
+      expect(ActiveRadio).toBeInTheDocument();
     });
 
     test('Deve conter um link para adicionar novo CPF/CNPJ', () => {
@@ -83,7 +89,7 @@ describe('Testes da página de consulta de CPF/CNPJ:', () => {
   });
 
   describe('Teste das funcionalidades da página de consulta de CPF/CNPJ:', () => {
-    describe('Testes relacionado ao radio input:', () => {
+    describe('Testes relacionado ao radio input de tipo:', () => {
       beforeEach(async () => {
         axiosGetMockResolved({ data: { ...cpfCnpjListMock } });
   
@@ -109,7 +115,7 @@ describe('Testes da página de consulta de CPF/CNPJ:', () => {
       });
     });
 
-    describe('Testes relacionado ao text input e chekbox block:', () => {
+    describe('Testes relacionado ao text input:', () => {
       beforeEach(async () => {
         axiosGetMockResolved({ data: { ...cpfCnpjListMock } });
   
@@ -125,17 +131,39 @@ describe('Testes da página de consulta de CPF/CNPJ:', () => {
         const cards = screen.getAllByTestId('card-div');        
         expect(cards).toHaveLength(1);
       });
+    });
 
-      test('Ao clicar no fitro do checkbox a lista deve ser alterada', () => {
-        const checkbox = screen.getByLabelText('Block');
-        userEvent.click(checkbox);
+    describe('Testes relacionado ao radio input de status:', () => {
+      beforeEach(async () => {
+        axiosGetMockResolved({ data: { ...cpfCnpjListMock } });
+  
+        await act(async () => {
+          renderWithRouter(<App />, { route: '/' });
+        })
+      });
 
-        let cards = screen.getAllByTestId('card-div');        
-        expect(cards).toHaveLength(6);
+      test('Deve conter todos os CPF/CNPJ quando o radio "Todos" está ativo', () => {
+        const allRadio = screen.getByLabelText('Todos');
+        userEvent.click(allRadio);
 
-        userEvent.click(checkbox);
-        cards = screen.getAllByTestId('card-div');
+        const cards = screen.getAllByTestId('card-div');        
         expect(cards).toHaveLength(11);
+      });
+
+      test('Deve conter apenas CPF/CNPJ bloqueados quando o radio "Bloqueado" está ativo', () => {
+        const blockedRadio = screen.getByLabelText('Bloqueados');
+        userEvent.click(blockedRadio);
+
+        const cards = screen.getAllByTestId('card-div');        
+        expect(cards).toHaveLength(6);
+      });
+
+      test('Deve conter apenas CPF/CNPJ Ativo quando o radio "Ativo" está ativo', () => {
+        const activeRadio = screen.getByLabelText('Ativo');
+        userEvent.click(activeRadio);
+
+        const cards = screen.getAllByTestId('card-div');        
+        expect(cards).toHaveLength(5);
       });
     });
 
