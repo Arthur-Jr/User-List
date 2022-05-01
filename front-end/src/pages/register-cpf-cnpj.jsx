@@ -3,10 +3,11 @@ import { Link } from 'react-router-dom';
 import * as validator from 'cpf-cnpj-validator';
 
 import registerData from '../api/register-cpf-cnpj';
-import RadioInputsSection from '../components/RadioInputsSection.jsx';
+import RadioInputSection from '../components/RadioInputSection.jsx';
 import InputComponent from '../components/controlledComponents/InputComponent.jsx';
 import TextInputSection from '../components/TextInputSection.jsx';
 import setMessageWithTime from '../utils/setMessageWithTimer';
+import { typeFilterRadio } from '../utils/radioInputsInfos';
 import '../CSS/registerPage.scss';
 
 function RegisterCpfCpnj() {
@@ -56,7 +57,11 @@ function RegisterCpfCpnj() {
         <h1 className="title">Registrar CPF/CNPJ</h1>
 
         <form onSubmit={ handleSubmit }>
-          <RadioInputsSection setRadioValue={ setRadioValue } />
+          <RadioInputSection
+            radios={[typeFilterRadio[1], typeFilterRadio[2]]}
+            setRadioValue={ setRadioValue }
+            classN="radio-section"
+          />
 
           <section className="textInput-section">
             <TextInputSection

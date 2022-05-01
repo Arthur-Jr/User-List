@@ -5,12 +5,12 @@ import getAllCpfCnpj from '../api/getAll-cpf-cnpj';
 import editCpfCnpj from '../api/edit-cpf-cnpj';
 import removeCpfCnpj from '../api/remove-cpf-cnpj';
 import getServerStatus from '../api/getServerStatus';
-import RadioInputsSection from '../components/RadioInputsSection.jsx';
-import BlockListRadioSection from '../components/BlockListRadioSection.jsx';
+import RadioInputSection from '../components/RadioInputSection.jsx';
 import TextInputSection from '../components/TextInputSection.jsx';
 import sortList from '../utils/sortList';
 import ListCpfCnpj from '../components/ListCpfCnpj.jsx';
 import setMessageWithTime from '../utils/setMessageWithTimer';
+import { sortRadio, statusRadio, typeFilterRadio } from '../utils/radioInputsInfos';
 import '../CSS/consultPage.scss';
 
 function ConsultCpfCnpj() {
@@ -19,6 +19,7 @@ function ConsultCpfCnpj() {
   const [radioValue, setRadioValue] = useState('cpf/cnpj');
   const [textInputValue, setTextInputValue] = useState('');
   const [blockStatus, setBlockStatus] = useState('all');
+  const [sort, setSortValue] = useState('asc');
   const [responseMessage, setResponseMessage] = useState('');
 
   // Assim que o componente carrega Faz uma requisição para pegar a lista de CPF/CNPJ.
@@ -26,7 +27,7 @@ function ConsultCpfCnpj() {
     getAllCpfCnpj().then((response) => setAllCpfCnpj(response));
   }, []);
 
-  // Lida com os filtros:
+  // Lida com os filtros e o sort:
   useEffect(() => {
     let toDisplay;
 
@@ -53,8 +54,8 @@ function ConsultCpfCnpj() {
       toDisplay = toDisplay.filter(({ blockListed }) => !blockListed);
     }
 
-    setArrayToDisplay(toDisplay);
-  }, [radioValue, allCpfCnpj, textInputValue, blockStatus]);
+    setArrayToDisplay(sortList(toDisplay, sort));
+  }, [radioValue, allCpfCnpj, textInputValue, blockStatus, sort]);
 
   const handleInputTextChange = ({ target: { value } }) => {
     const onlyNumberRegex = /(^[0-9]*$)|([.-]*$)/;
@@ -69,7 +70,7 @@ function ConsultCpfCnpj() {
       const takeOutEdited = allCpfCnpj[cpfOrCnpj]
         .filter((data) => data[cpfOrCnpj] !== editedData[cpfOrCnpj]);
 
-      const arrayWithEdited = sortList([...takeOutEdited, editedData], cpfOrCnpj);
+      const arrayWithEdited = [...takeOutEdited, editedData];
 
       setAllCpfCnpj({ ...allCpfCnpj, [cpfOrCnpj]: arrayWithEdited });
     } else {
@@ -100,7 +101,17 @@ function ConsultCpfCnpj() {
   <main className="consult-main">
     <section className="main-section">
       <section className="filter-section">
-        <RadioInputsSection setRadioValue={ setRadioValue } registerPage={ false } />
+        <RadioInputSection
+          radios={typeFilterRadio}
+          setRadioValue={ setRadioValue }
+          classN="radio-section"
+        />
+
+        <RadioInputSection
+          radios={sortRadio}
+          setRadioValue={ setSortValue }
+          classN="sort-radio-section"
+        />
 
         <section className="textInput-section">
           <TextInputSection
@@ -109,8 +120,10 @@ function ConsultCpfCnpj() {
             handleInputTextChange={ handleInputTextChange }
           />
 
-          <BlockListRadioSection
+          <RadioInputSection
+            radios={statusRadio}
             setRadioValue={ setBlockStatus }
+            classN="radio-section"
           />
         </section>
 
