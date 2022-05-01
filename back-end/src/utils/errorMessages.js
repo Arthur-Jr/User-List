@@ -1,5 +1,5 @@
 module.exports = {
   invalid: 'inválido',
-  alreadyExists: 'Já registrado',
+  alreadyExists: 'já registrado',
   notFound: 'não encontrado',
 };
