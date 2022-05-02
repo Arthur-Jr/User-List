@@ -1,9 +1,11 @@
 import axios from 'axios';
 
+const URL = 'http://localhost:3001';
+
 const registerData = async (body, endPoint) => {
   try {
-    await axios.post(`http://localhost:3001/${endPoint}`, body);
-    return `${endPoint.toUpperCase()} registrado com sucesso`;
+    await axios.post(`${URL}/user-list/${endPoint}`, body);
+    return `${endPoint} registrado com sucesso`;
   } catch (error) {
     return error.response.data.message;
   }
