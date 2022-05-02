@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 
 import RegisterUser from './pages/register-user.jsx';
-import ConsultUserList from './pages/consult-cpf-cnpj.jsx';
+import ConsultUserList from './pages/userList.jsx';
 import './CSS/app.scss';
 
 function App() {
