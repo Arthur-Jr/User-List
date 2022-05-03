@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const URL = 'http://localhost:3001';
+const URL = process.env.REACT_APP_BACK_ENDPOINT || 'http://localhost:3001';
 
 const registerData = async (body, endPoint) => {
   try {
