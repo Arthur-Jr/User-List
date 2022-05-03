@@ -14,6 +14,8 @@ const TEXT_INPUT = 'Username/Email';
 const ALL_TYPE_RADIO = 'Todos';
 const USERNAME_RADIO = 'Username';
 const EMAIL_RADIO = 'Email';
+const ASC_RADIO = 'Crescente';
+const DESC_RADIO = 'Decrescente';
 const BLOCKED_RADIO = 'Bloqueados';
 const ACTIVE_RADIO = 'Ativo';
 const CARD_DIV = 'card-div';
@@ -56,6 +58,14 @@ describe('Testes da página de lista de usuários:', () => {
       expect(allTypeRadio[0].checked).toBe(true);
       expect(usernameRadio).toBeInTheDocument();
       expect(emailRadio).toBeInTheDocument();
+    });
+
+    test('Deve conter 2 botões radio para ordenação.', () => {
+      const ascRadio = screen.getByLabelText(ASC_RADIO);
+      const descRadio = screen.getByLabelText(DESC_RADIO);
+
+      expect(ascRadio).toBeInTheDocument();
+      expect(descRadio).toBeInTheDocument();
     });
 
     test('Deve conter um input de texto', () => {
@@ -123,6 +133,42 @@ describe('Testes da página de lista de usuários:', () => {
 
         const cards = screen.getAllByTestId(CARD_DIV);        
         expect(cards).toHaveLength(5);
+      });
+    });
+
+    describe('Testes relacionado ao radio input de ordenação', () => {
+      beforeEach(async () => {
+        axiosGetMockResolved({ data: userListMock });
+  
+        await act(async () => {
+          renderWithRouter(<App />, { route: '/' });
+        })
+      });
+
+      test('A userList deve está ordenada em ordem crescente quando o radio input "Crescente" está ativo.', async () => {
+        const ascRadio = screen.getByLabelText(ASC_RADIO);
+
+        await act(async () => {
+          userEvent.click(ascRadio);
+        });
+
+        const cardTitles = screen.getAllByRole('heading', { level: 4 });
+  
+        expect(cardTitles[0].innerHTML).toContain('atest');
+        expect(cardTitles[1].innerHTML).toContain('email10@email.com');
+      });
+
+      test('A userList deve está ordenada em ordem decrescente quando o radio input "Decrescente" está ativo.', async () => {
+        const descRadio = screen.getByLabelText(DESC_RADIO);
+
+        await act(async () => {
+          userEvent.click(descRadio);
+        });
+
+        const cardTitles = screen.getAllByRole('heading', { level: 4 });
+  
+        expect(cardTitles[0].innerHTML).toContain('xablau03@email.com');
+        expect(cardTitles[1].innerHTML).toContain('xablau01@email.com');
       });
     });
 
