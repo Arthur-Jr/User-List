@@ -5,10 +5,21 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import renderWithRouter from './renderWithRouter';
-import cpfCnpjListMock from './cpfCnpjListMock';
+import userListMock from './userListMock';
 import App from '../App';
 
 jest.mock('axios');
+
+const TEXT_INPUT = 'Username/Email';
+const ALL_TYPE_RADIO = 'Todos';
+const USERNAME_RADIO = 'Username';
+const EMAIL_RADIO = 'Email';
+const BLOCKED_RADIO = 'Bloqueados';
+const ACTIVE_RADIO = 'Ativo';
+const CARD_DIV = 'card-div';
+const EDIT_CHECKBOX = 'Bloqueado';
+const REMOVE_BTN = 'Remover';
+const RESPONSE_MESSAGE = 'response-message';
 
 const axiosGetMockResolved = (returnValue) => {
   axios.get.mockResolvedValue(returnValue);
@@ -26,10 +37,10 @@ afterEach(() => {
   axios.mockRestore();
 });
 
-describe('Testes da página de consulta de CPF/CNPJ:', () => {
+describe('Testes da página de lista de usuários:', () => {
   describe('Testa se os elementos estão presentes na tela:', () => {
     beforeEach(async () => {
-      axiosGetMockResolved({ data: { ...cpfCnpjListMock } });
+      axiosGetMockResolved({ data: userListMock });
 
       await act(async () => {
         renderWithRouter(<App />, { route: '/' });
@@ -37,42 +48,42 @@ describe('Testes da página de consulta de CPF/CNPJ:', () => {
     });
 
     test('Deve conter 3 botões radio para filtro de tipo.', () => {
-      const cpfCnpjRadio = screen.getByLabelText('CPF/CNPJ');
-      const cpfRadio = screen.getByLabelText('CPF');
-      const cnpjRadio = screen.getByLabelText('CNPJ');
+      const allTypeRadio = screen.getAllByLabelText(ALL_TYPE_RADIO);
+      const usernameRadio = screen.getByLabelText(USERNAME_RADIO);
+      const emailRadio = screen.getByLabelText(EMAIL_RADIO);
 
-      expect(cpfCnpjRadio).toBeInTheDocument();
-      expect(cpfCnpjRadio.checked).toBe(true);
-      expect(cpfRadio).toBeInTheDocument();
-      expect(cnpjRadio).toBeInTheDocument();
+      expect(allTypeRadio[0]).toBeInTheDocument();
+      expect(allTypeRadio[0].checked).toBe(true);
+      expect(usernameRadio).toBeInTheDocument();
+      expect(emailRadio).toBeInTheDocument();
     });
 
     test('Deve conter um input de texto', () => {
-      const textInput = screen.getByPlaceholderText('CPF/CNPJ');
+      const textInput = screen.getByPlaceholderText(TEXT_INPUT);
       expect(textInput).toBeInTheDocument();
     });
 
     test('Deve conter 3 botões radio para filtro por status.', () => {
-      const allRadio = screen.getByLabelText('Todos');
-      const BlockedRadio = screen.getByLabelText('Bloqueados');
-      const ActiveRadio = screen.getByLabelText('Ativo');
+      const allRadio = screen.getAllByLabelText(ALL_TYPE_RADIO);
+      const BlockedRadio = screen.getByLabelText(BLOCKED_RADIO);
+      const ActiveRadio = screen.getByLabelText(ACTIVE_RADIO);
 
-      expect(allRadio).toBeInTheDocument();
-      expect(allRadio.checked).toBe(true);
+      expect(allRadio[1]).toBeInTheDocument();
+      expect(allRadio[1].checked).toBe(true);
       expect(BlockedRadio).toBeInTheDocument();
       expect(ActiveRadio).toBeInTheDocument();
     });
 
-    test('Deve conter um link para adicionar novo CPF/CNPJ', () => {
-      const link = screen.getByText('Adicionar novo CPF/CNPJ');
+    test('Deve conter um link para adicionar um novo usuário', () => {
+      const link = screen.getByText('Adicionar novo Username/Email');
       expect(link).toBeInTheDocument();
     });
 
-    test('Deve conter uma lista de CPF/CNPJ', () => {
-      const cards = screen.getAllByTestId('card-div');
+    test('Deve conter uma lista de usuários', () => {
+      const cards = screen.getAllByTestId(CARD_DIV);
       const cardTitles = screen.getAllByRole('heading', { level: 4 });
-      const editCheck = screen.getAllByLabelText('Bloqueado');
-      const removeBnts = screen.getAllByText('Remover');
+      const editCheck = screen.getAllByLabelText(EDIT_CHECKBOX);
+      const removeBnts = screen.getAllByText(REMOVE_BTN);
 
       expect(cards).toHaveLength(11);
       expect(editCheck).toHaveLength(11);
@@ -88,36 +99,36 @@ describe('Testes da página de consulta de CPF/CNPJ:', () => {
     });
   });
 
-  describe('Teste das funcionalidades da página de consulta de CPF/CNPJ:', () => {
+  describe('Teste das funcionalidades da página de lista de usuários:', () => {
     describe('Testes relacionado ao radio input de tipo:', () => {
       beforeEach(async () => {
-        axiosGetMockResolved({ data: { ...cpfCnpjListMock } });
+        axiosGetMockResolved({ data: userListMock });
   
         await act(async () => {
           renderWithRouter(<App />, { route: '/' });
         })
       });
 
-      test('Deve conter apenas CPF quando o radio CPF está ativo', () => {
-        const cpfRadio = screen.getByLabelText('CPF');
-        userEvent.click(cpfRadio);
+      test('Deve conter apenas username quando o radio username está ativo', () => {
+        const usernameRadio = screen.getByLabelText(USERNAME_RADIO);
+        userEvent.click(usernameRadio);
 
-        const cards = screen.getAllByTestId('card-div');        
+        const cards = screen.getAllByTestId(CARD_DIV);
         expect(cards).toHaveLength(6);
       });
 
-      test('Deve conter apenas CNPJ quando o radio CNPJ está ativo', () => {
-        const cnpjRadio = screen.getByLabelText('CNPJ');
-        userEvent.click(cnpjRadio);
+      test('Deve conter apenas email quando o radio email está ativo', () => {
+        const emailRadio = screen.getByLabelText(EMAIL_RADIO);
+        userEvent.click(emailRadio);
 
-        const cards = screen.getAllByTestId('card-div');        
+        const cards = screen.getAllByTestId(CARD_DIV);        
         expect(cards).toHaveLength(5);
       });
     });
 
     describe('Testes relacionado ao text input:', () => {
       beforeEach(async () => {
-        axiosGetMockResolved({ data: { ...cpfCnpjListMock } });
+        axiosGetMockResolved({ data: userListMock });
   
         await act(async () => {
           renderWithRouter(<App />, { route: '/' });
@@ -125,51 +136,51 @@ describe('Testes da página de consulta de CPF/CNPJ:', () => {
       });
 
       test('Ao digitar no input a lista deve ser alterada de acordo com o valor do input', () => {
-        const textInput = screen.getByPlaceholderText('CPF/CNPJ');
-        userEvent.type(textInput, '837');
+        const textInput = screen.getByPlaceholderText(TEXT_INPUT);
+        userEvent.type(textInput, 'joa');
 
-        const cards = screen.getAllByTestId('card-div');        
+        const cards = screen.getAllByTestId(CARD_DIV);        
         expect(cards).toHaveLength(1);
       });
     });
 
     describe('Testes relacionado ao radio input de status:', () => {
       beforeEach(async () => {
-        axiosGetMockResolved({ data: { ...cpfCnpjListMock } });
+        axiosGetMockResolved({ data: userListMock });
   
         await act(async () => {
           renderWithRouter(<App />, { route: '/' });
         })
       });
 
-      test('Deve conter todos os CPF/CNPJ quando o radio "Todos" está ativo', () => {
-        const allRadio = screen.getByLabelText('Todos');
-        userEvent.click(allRadio);
+      test('Deve conter todos os usuários quando o radio de status "Todos" está ativo', () => {
+        const allRadio = screen.getAllByLabelText(ALL_TYPE_RADIO);
+        userEvent.click(allRadio[1]);
 
-        const cards = screen.getAllByTestId('card-div');        
+        const cards = screen.getAllByTestId(CARD_DIV);        
         expect(cards).toHaveLength(11);
       });
 
-      test('Deve conter apenas CPF/CNPJ bloqueados quando o radio "Bloqueado" está ativo', () => {
-        const blockedRadio = screen.getByLabelText('Bloqueados');
+      test('Deve conter apenas usuários bloqueados quando o radio "Bloqueados" está ativo', () => {
+        const blockedRadio = screen.getByLabelText(BLOCKED_RADIO);
         userEvent.click(blockedRadio);
 
-        const cards = screen.getAllByTestId('card-div');        
+        const cards = screen.getAllByTestId(CARD_DIV);        
         expect(cards).toHaveLength(6);
       });
 
-      test('Deve conter apenas CPF/CNPJ Ativo quando o radio "Ativo" está ativo', () => {
-        const activeRadio = screen.getByLabelText('Ativo');
+      test('Deve conter apenas usuários Ativo quando o radio "Ativo" está ativo', () => {
+        const activeRadio = screen.getByLabelText(ACTIVE_RADIO);
         userEvent.click(activeRadio);
 
-        const cards = screen.getAllByTestId('card-div');        
+        const cards = screen.getAllByTestId(CARD_DIV);        
         expect(cards).toHaveLength(5);
       });
     });
 
-    describe('Testes relacionados a regra de nogocio de edição e remoção de CPF/CNPJ', () => {
+    describe('Testes relacionados a regra de nogocio de edição e remoção de usuário', () => {
       beforeEach(async () => {
-        axiosGetMockResolved({ data: { ...cpfCnpjListMock } });
+        axiosGetMockResolved({ data: userListMock });
   
         await act(async () => {
           renderWithRouter(<App />, { route: '/' });
@@ -177,25 +188,25 @@ describe('Testes da página de consulta de CPF/CNPJ:', () => {
       });
 
       test('Deve alterar o status quando o input de checkbox for clicado', async () => {
-        axiosPutMockResolved({ data: { cpf: '24795932077', blockListed: false } });
+        axiosPutMockResolved({ data: { user: 'atest', blockListed: false } });
 
-        let editCheck = screen.getAllByLabelText('Bloqueado');
+        let editCheck = screen.getAllByLabelText(EDIT_CHECKBOX);
         expect(editCheck[0].checked).toBe(true);
         await act(async () => {
           userEvent.click(editCheck[0]);
         })
 
-        editCheck = screen.getAllByLabelText('Bloqueado');
+        editCheck = screen.getAllByLabelText(EDIT_CHECKBOX);
         expect(editCheck[0].checked).toBe(false);
 
         await act(async () => renderWithRouter(<App />, { route: '/' }));
-        editCheck = screen.getAllByLabelText('Bloqueado');
+        editCheck = screen.getAllByLabelText(EDIT_CHECKBOX);
         expect(editCheck[0].checked).toBe(false);
       });
 
-      test('Deve remover o CPF/CNPJ da lista quando o botão remover for clicado ', async () => {
-        axiosDeleteMockResolved({ data: { message: 'CPF removido com sucesso' } })
-        const removeBnts = screen.getAllByText('Remover');
+      test('Deve remover o usuário da lista quando o botão remover for clicado ', async () => {
+        axiosDeleteMockResolved({ data: { message: 'Usuário removido com sucesso' } })
+        const removeBnts = screen.getAllByText(REMOVE_BTN);
 
         const cardTitles = screen.getAllByRole('heading', { level: 4 });
         expect(cardTitles[0]).toBeInTheDocument();
@@ -203,9 +214,9 @@ describe('Testes da página de consulta de CPF/CNPJ:', () => {
         await act(async () => {
           userEvent.click(removeBnts[0]);
         });
-        const responseMessage = screen.getByTestId('response-message');
+        const responseMessage = screen.getByTestId(RESPONSE_MESSAGE);
         expect(responseMessage).toBeInTheDocument();
-        expect(responseMessage.innerHTML).toBe('CPF removido com sucesso');
+        expect(responseMessage.innerHTML).toBe('Usuário removido com sucesso');
         expect(cardTitles[0]).not.toBeInTheDocument();
 
         await act(async () => renderWithRouter(<App />, { route: '/' }));
@@ -213,8 +224,8 @@ describe('Testes da página de consulta de CPF/CNPJ:', () => {
       });
     });
 
-    describe('Teste do link de Adicionar novo CPF/CNPJ:', () => {
-      test('Deve redirecionar para página de registro.', async () => {
+    describe('Teste do link de Adicionar novo usuário:', () => {
+      test('Deve redirecionar para página de registro de usuário.', async () => {
         let HISTORY;
 
         await act(async () => {
@@ -222,11 +233,11 @@ describe('Testes da página de consulta de CPF/CNPJ:', () => {
           HISTORY = history;
         });
 
-        const link = screen.getByText('Adicionar novo CPF/CNPJ');
+        const link = screen.getByText('Adicionar novo Username/Email');
         expect(link).toBeInTheDocument();
 
         userEvent.click(link);
-        expect(HISTORY.location.pathname).toBe('/register-cpf-cnpj');
+        expect(HISTORY.location.pathname).toBe('/register-user');
       });
     });
   });
