@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "CRUD/Validador de CPF/CNPJ",
-    "description": "Registra/Valida CPF/CNPJ",
+    "title": "CRUD de Username/Email",
+    "description": "Registra, edita, remove Usernames/Emails.",
     "version": "1.0.0",
     "contact": {
       "name": "Arthur",
@@ -17,10 +17,10 @@
   ],
   "components": {
     "schemas": {
-      "cpfToAdd": {
+      "usernameToAdd": {
         "type": "object",
         "properties": {
-          "cpf": {
+          "user": {
             "type": "string"
           },
           "blockListed": {
@@ -28,7 +28,7 @@
           }
         },
         "example": {
-          "cpf": "93473544060",
+          "user": "swaggerTest",
           "blockListed": false
         }
       },
@@ -40,10 +40,10 @@
           }
         }
       },
-      "cnpjToAdd": {
+      "emailToAdd": {
         "type": "object",
         "properties": {
-          "cnpj": {
+          "user": {
             "type": "string"
           },
           "blockListed": {
@@ -51,30 +51,30 @@
           }
         },
         "example": {
-          "cnpj": "77613036000175",
+          "user": "swaggerTest@email.com",
           "blockListed": false
         }
       }
     }
   },
   "paths": {
-    "/cpf": {
+    "/user-list/username": {
       "post": {
-        "summary": "Registro de CPF",
-        "description": "Essa rota é responsável por registro de um novo CPF",
-        "tags": ["CPF"],
+        "summary": "Registro de Username",
+        "description": "Essa rota é responsável por registro de um novo username",
+        "tags": ["User list Registro"],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/cpfToAdd"
+                "$ref": "#/components/schemas/usernameToAdd"
               }
             }
           }
         },
         "responses": {
           "201": {
-            "description": "CPF Registrado com sucesso",
+            "description": "Username Registrado com sucesso",
             "content": {
               "application/json": {
                 "type": "object",
@@ -85,13 +85,13 @@
             }
           },
           "409": {
-            "description": "CPF já está registrado",
+            "description": "Usuário já está registrado",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "example": {
-                    "message": "CPF Já registrado"
+                    "message": "Usuário Já registrado"
                   }
                 }
               }
@@ -104,7 +104,7 @@
                 "schema": {
                   "type": "object",
                   "example": {
-                    "message": "CPF inválido"
+                    "message": "Username inválido"
                   }
                 }
               }
@@ -113,145 +113,23 @@
         }
       }
     },
-    "/cpf/{cpf}": {
-      "put": {
-        "summary": "Edição do status do CPF",
-        "description": "Essa rota é responsável pela edição do status do CPF",
-        "tags": ["CPF"],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/payloadToEdit"
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "cpf",
-            "in": "path",
-            "description": "CPF que será editado",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "CPF editado com sucesso",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/cpfToAdd"
-                },
-                "examples": {
-                  "CPF": {
-                    "value": {
-                      "cpf": "93473544060",
-                      "blockListed": true
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Payload com dados inválidos",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "message": "CPF inválido"
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "CPF não encontrado",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "message": "CPF não encontrado"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "summary": "Remoção do CPF",
-        "description": "Essa rota é responsável pela remoção do CPF",
-        "tags": ["CPF"],
-        "parameters": [
-          {
-            "name": "cpf",
-            "in": "path",
-            "description": "CPF que será removido",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "CPF removido com sucesso",
-            "content": {
-              "application/json": {
-                "type": "object",
-                "example": {
-                  "message": "CPF removido com sucesso"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Payload com dados inválidos",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "message": "CPF inválido"
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "CPF não encontrado",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "message": "CPF não encontrado"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/cnpj": {
+    "/user-list/email": {
       "post": {
-        "summary": "Registro de CNPJ",
-        "description": "Essa rota é responsável por registro de um novo CNPJ",
-        "tags": ["CNPJ"],
+        "summary": "Registro de Email",
+        "description": "Essa rota é responsável por registro de um novo Email",
+        "tags": ["User list Registro"],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/cnpjToAdd"
+                "$ref": "#/components/schemas/emailToAdd"
               }
             }
           }
         },
         "responses": {
           "201": {
-            "description": "CNPJ Registrado com sucesso",
+            "description": "Email Registrado com sucesso",
             "content": {
               "application/json": {
                 "type": "object",
@@ -262,13 +140,13 @@
             }
           },
           "409": {
-            "description": "CNPJ já está registrado",
+            "description": "Usuário já está registrado",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "example": {
-                    "message": "CNPJ Já registrado"
+                    "message": "Usuário Já registrado"
                   }
                 }
               }
@@ -281,7 +159,7 @@
                 "schema": {
                   "type": "object",
                   "example": {
-                    "message": "CNPJ inválido"
+                    "message": "Email inválido"
                   }
                 }
               }
@@ -290,145 +168,145 @@
         }
       }
     },
-    "/cnpj/{cnpj}": {
-      "put": {
-        "summary": "Edição do status do CNPJ",
-        "description": "Essa rota é responsável pela edição do status do CNPJ",
-        "tags": ["CNPJ"],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/payloadToEdit"
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "cnpj",
-            "in": "path",
-            "description": "CNPJ que será editado",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "CNPJ editado com sucesso",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/cnpjToAdd"
-                },
-                "examples": {
-                  "CNPJ": {
-                    "value": {
-                      "cnpj": "77613036000175",
-                      "blockListed": true
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Payload com dados inválidos",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "message": "CNPJ inválido"
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "CNPJ não encontrado",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "message": "CNPJ não encontrado"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "summary": "Remoção do CNPJ",
-        "description": "Essa rota é responsável pela remoção do CNPJ",
-        "tags": ["CNPJ"],
-        "parameters": [
-          {
-            "name": "cnpj",
-            "in": "path",
-            "description": "CNPJ que será removido",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "CNPJ removido com sucesso",
-            "content": {
-              "application/json": {
-                "type": "object",
-                "example": {
-                  "message": "CNPJ removido com sucesso"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Payload com dados inválidos",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "message": "CNPJ inválido"
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "CNPJ não encontrado",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "message": "CNPJ não encontrado"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/cpf-cnpj-lists": {
+    "/user-list": {
       "get": {
-        "summary": "Lista do CPF/CNPJ",
-        "description": "Essa rota é responsável por pegar a lista de CPF/CNPJ",
-        "tags": ["Listar CPF/CNPJ"],
+        "summary": "Lista de Usuários",
+        "description": "Essa rota é responsável por pegar lista de usuários",
+        "tags": ["User list"],
         "responses": {
           "200": {
-            "description": "CPF/CNPJ listados com sucesso",
+            "description": "Usuários listados com sucesso",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array"
                 },
                 "example": [
-                  { "cpf": "93473544060", "blockListed": false },
-                  { "cnpj": "77613036000175", "blockListed": false }
+                  { "cpf": "swaggerTest", "blockListed": false },
+                  { "cnpj": "swaggerTest@email.com", "blockListed": false }
                 ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user-list/{user}": {
+      "put": {
+        "summary": "Edição do status do usuário",
+        "description": "Essa rota é responsável pela edição do status do usuário",
+        "tags": ["User list Edição"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/payloadToEdit"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "user",
+            "in": "path",
+            "description": "Usuário que será editado",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuário editado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/usernameToAdd"
+                },
+                "examples": {
+                  "User": {
+                    "value": {
+                      "user": "swaggerTest",
+                      "blockListed": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Payload com dados inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "message": "Usuário inválido"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Usuário não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "message": "Usuário não encontrado"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Remoção de Usuário",
+        "description": "Essa rota é responsável pela remoção de usuário",
+        "tags": ["User list Remoção"],
+        "parameters": [
+          {
+            "name": "user",
+            "in": "path",
+            "description": "Usuário que será removido",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuário removido com sucesso",
+            "content": {
+              "application/json": {
+                "type": "object",
+                "example": {
+                  "message": "Usuário removido com sucesso"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Payload com dados inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "message": "Usuário inválido"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Usuário não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "message": "Usuário não encontrado"
+                  }
+                }
               }
             }
           }
