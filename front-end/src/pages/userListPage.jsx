@@ -1,97 +1,81 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import getAllCpfCnpj from '../api/getAll-cpf-cnpj';
-import editCpfCnpj from '../api/edit-cpf-cnpj';
-import removeCpfCnpj from '../api/remove-cpf-cnpj';
+import getAllUsers from '../api/getAllUsers';
+import editUserStatus from '../api/editUserStatus';
+import removeUser from '../api/removeUser';
 import getServerStatus from '../api/getServerStatus';
 import RadioInputSection from '../components/RadioInputSection.jsx';
 import TextInputSection from '../components/TextInputSection.jsx';
 import sortList from '../utils/sortList';
-import ListCpfCnpj from '../components/ListCpfCnpj.jsx';
+import UserList from '../components/UserList.jsx';
 import setMessageWithTime from '../utils/setMessageWithTimer';
 import { sortRadio, statusRadio, typeFilterRadio } from '../utils/radioInputsInfos';
-import '../CSS/consultPage.scss';
+import '../CSS/userListPage.scss';
 
-function ConsultCpfCnpj() {
-  const [allCpfCnpj, setAllCpfCnpj] = useState({ cpf: [], cnpj: [] });
+function UsersList() {
+  const [allUsers, setAllUsers] = useState([]);
   const [arrayToDisplay, setArrayToDisplay] = useState([]);
-  const [radioValue, setRadioValue] = useState('cpf/cnpj');
+  const [radioValue, setRadioValue] = useState('Username/Email');
   const [textInputValue, setTextInputValue] = useState('');
   const [blockStatus, setBlockStatus] = useState('all');
   const [sort, setSortValue] = useState('asc');
   const [responseMessage, setResponseMessage] = useState('');
 
-  // Assim que o componente carrega Faz uma requisição para pegar a lista de CPF/CNPJ.
+  // Assim que o componente carrega Faz uma requisição para pegar a lista de usuários.
   useEffect(() => {
-    getAllCpfCnpj().then((response) => setAllCpfCnpj(response));
+    getAllUsers().then((response) => setAllUsers(response));
   }, []);
 
   // Lida com os filtros e o sort:
   useEffect(() => {
-    let toDisplay;
+    let toDisplay = sortList(allUsers, sort);
 
     // Filtro do radio input:
-    if (radioValue === 'cpf/cnpj') {
-      toDisplay = [...allCpfCnpj.cpf, ...allCpfCnpj.cnpj];
-    } else {
-      toDisplay = allCpfCnpj[radioValue];
+    if (radioValue !== 'Username/Email') {
+      toDisplay = allUsers.filter(({ type }) => type === radioValue.toLowerCase());
     }
 
     // Filtro do text input:
-    if (textInputValue.length > 0) {
-      toDisplay = toDisplay.filter((cpfCpnj) => {
-        const filterResult = cpfCpnj.cpf ? cpfCpnj.cpf.includes(textInputValue)
-          : cpfCpnj.cnpj.includes(textInputValue);
-        return filterResult;
-      });
-    }
+    toDisplay = toDisplay.filter(({ user }) => user.includes(textInputValue));
 
-    // Filtro do status do CPF/CNPJ:
+    // Filtro do status do Username/Email:
     if (blockStatus === 'blocked') {
       toDisplay = toDisplay.filter(({ blockListed }) => blockListed);
     } else if (blockStatus === 'active') {
       toDisplay = toDisplay.filter(({ blockListed }) => !blockListed);
     }
 
-    setArrayToDisplay(sortList(toDisplay, sort));
-  }, [radioValue, allCpfCnpj, textInputValue, blockStatus, sort]);
+    setArrayToDisplay(toDisplay);
+  }, [radioValue, allUsers, textInputValue, blockStatus, sort]);
 
   const handleInputTextChange = ({ target: { value } }) => {
-    const onlyNumberRegex = /(^[0-9]*$)|([.-]*$)/;
-    if (onlyNumberRegex.test(value)) setTextInputValue(value);
+    const alphaNumRegex = /^\w*$/;
+    if (alphaNumRegex.test(value)) setTextInputValue(value);
   };
 
   const handleEdit = async ({ target: { value, checked } }) => {
-    const cpfOrCnpj = value.length === 11 ? 'cpf' : 'cnpj';
-    const editedData = await editCpfCnpj(checked, value, cpfOrCnpj);
+    const editedData = await editUserStatus(checked, value);
 
-    if (editedData[cpfOrCnpj]) {
-      const takeOutEdited = allCpfCnpj[cpfOrCnpj]
-        .filter((data) => data[cpfOrCnpj] !== editedData[cpfOrCnpj]);
-
-      const arrayWithEdited = [...takeOutEdited, editedData];
-
-      setAllCpfCnpj({ ...allCpfCnpj, [cpfOrCnpj]: arrayWithEdited });
+    if (editedData) {
+      const takeOutEdited = allUsers.filter(({ user }) => user !== editedData.user);
+      setAllUsers([...takeOutEdited, editedData]);
     } else {
-      setMessageWithTime(editedData, setResponseMessage, 5000);
+      setMessageWithTime(editedData, setResponseMessage, 3000);
     }
   };
 
-  const handleRemove = async (cpfCnpjToRemove) => {
-    const cpfOrCnpj = cpfCnpjToRemove.length === 11 ? 'cpf' : 'cnpj';
-    const message = await removeCpfCnpj(cpfCnpjToRemove, cpfOrCnpj);
+  const handleRemove = async (userToRemove) => {
+    const message = await removeUser(userToRemove);
 
-    const takeOutRemoved = allCpfCnpj[cpfOrCnpj]
-      .filter((data) => data[cpfOrCnpj] !== cpfCnpjToRemove);
+    const takeOutRemoved = allUsers.filter(({ user }) => user !== userToRemove);
+    setAllUsers(takeOutRemoved);
 
-    setAllCpfCnpj({ ...allCpfCnpj, [cpfOrCnpj]: takeOutRemoved });
-
-    setMessageWithTime(message, setResponseMessage, 5000);
+    setMessageWithTime(message, setResponseMessage, 3000);
   };
 
   // Checa o status do servidor:
-  const handleServeButtonClick = async () => {
+  const handleServerButtonClick = async () => {
     const message = await getServerStatus();
     // eslint-disable-next-line no-alert
     alert(message);
@@ -127,10 +111,13 @@ function ConsultCpfCnpj() {
           />
         </section>
 
-      <Link to="/register-cpf-cnpj">Adicionar novo CPF/CNPJ</Link>
+      <Link to="/register-user">Adicionar novo Username/Email</Link>
       </section>
 
-      <ListCpfCnpj
+      { arrayToDisplay.length > 0
+      && <span className="array-length">{ arrayToDisplay.length }</span>}
+
+      <UserList
         arrayToDisplay={ arrayToDisplay }
         handleEdit={ handleEdit }
         handleRemove={ handleRemove }
@@ -142,10 +129,10 @@ function ConsultCpfCnpj() {
     <button
       type="button"
       className="server-btn"
-      onClick={ handleServeButtonClick }
+      onClick={ handleServerButtonClick }
     >Server status</button>
   </main>
   );
 }
 
-export default ConsultCpfCnpj;
+export default UsersList;
