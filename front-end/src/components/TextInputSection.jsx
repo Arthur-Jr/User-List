@@ -7,7 +7,7 @@ function TextInputSection({ textInputValue, handleInputTextChange }) {
   return (
     <InputComponent
       type="text"
-      maxLength={ 30 }
+      maxLength={ 25 }
       value={ textInputValue }
       handle={ handleInputTextChange }
       placeholder="Username/Email"
