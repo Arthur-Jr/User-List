@@ -1,14 +1,14 @@
 import { Route, Routes } from 'react-router-dom';
 
-import RegisterCpfCpnj from './pages/register-cpf-cnpj.jsx';
-import ConsultCpfCnpj from './pages/consult-cpf-cnpj.jsx';
+import RegisterUser from './pages/register-user.jsx';
+import ConsultUserList from './pages/userListPage.jsx';
 import './CSS/app.scss';
 
 function App() {
   return (
     <Routes>
-      <Route path='/register-cpf-cnpj' element={ <RegisterCpfCpnj/> }/>
-      <Route path='/' element={<ConsultCpfCnpj />} />
+      <Route path='/register-user' element={ <RegisterUser/> }/>
+      <Route path='/' element={<ConsultUserList />} />
     </Routes>
   );
 }

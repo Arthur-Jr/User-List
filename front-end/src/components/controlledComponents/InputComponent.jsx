@@ -16,6 +16,7 @@ function InputComponent({
         onChange={ handle }
         placeholder={ placeholder }
         defaultChecked={ checked }
+        autoComplete="off"
       />
       {text}
     </label>

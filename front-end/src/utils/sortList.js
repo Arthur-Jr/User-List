@@ -1,15 +1,39 @@
-const sortList = (listToSort, sequence) => {
+const asc = (listToSort) => {
   const sortedList = listToSort.sort((a, b) => {
-    const aKey = Object.values(a)[1].length === 11 ? 'cpf' : 'cnpj';
-    const bKey = Object.values(b)[1].length === 11 ? 'cpf' : 'cnpj';
-
-    if (sequence === 'asc') {
-      return a[aKey] - b[bKey];
+    if (a.user > b.user) {
+      return 1;
     }
 
-    return b[aKey] - a[bKey];
+    if (a.user < b.user) {
+      return -1;
+    }
+
+    return 0;
   });
   return sortedList;
+};
+
+const desc = (listToSort) => {
+  const sortedList = listToSort.sort((a, b) => {
+    if (b.user > a.user) {
+      return 1;
+    }
+
+    if (b.user < a.user) {
+      return -1;
+    }
+
+    return 0;
+  });
+  return sortedList;
+};
+
+const sortList = (listToSort, sequence) => {
+  if (sequence === 'asc') {
+    return asc(listToSort);
+  }
+
+  return desc(listToSort);
 };
 
 export default sortList;

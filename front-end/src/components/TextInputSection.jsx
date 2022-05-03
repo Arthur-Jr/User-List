@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 
 import InputComponent from './controlledComponents/InputComponent.jsx';
 
-function TextInputSection({ textInputValue, radioValue, handleInputTextChange }) {
+function TextInputSection({ textInputValue, handleInputTextChange }) {
   return (
     <InputComponent
       type="text"
-      maxLength={ radioValue === 'cpf' ? 11 : 14 }
+      maxLength={ 25 }
       value={ textInputValue }
       handle={ handleInputTextChange }
-      placeholder="CPF/CNPJ"
+      placeholder="Username/Email"
       name="text-input"
       id="text-input"
     />
@@ -19,7 +19,6 @@ function TextInputSection({ textInputValue, radioValue, handleInputTextChange })
 
 TextInputSection.propTypes = {
   textInputValue: PropTypes.string.isRequired,
-  radioValue: PropTypes.string.isRequired,
   handleInputTextChange: PropTypes.func.isRequired,
 };
 

@@ -1,7 +1,7 @@
 @import '../CSS/app.scss';
 
 .register-main {
-  height: 100%;
+  height: 560px;
   width: 100%;
   
   .main-section {
@@ -29,9 +29,12 @@
 
         @include flex(row, center, space-evenly);
 
-        width: 45%;
+        height: 30px;
+        width: 65%;
 
-        .CPF-CNPJ-radio-label {
+        .username-email-radio-label {
+          @include flex(row, center, center);
+
           width: 30vw;
 
           input {
@@ -107,7 +110,7 @@
     .main-section {
       border: double;
       height: 70%;
-      width: 70%;
+      width: 80%;
 
       form {
         height: 35%;
@@ -116,7 +119,7 @@
   
         .radio-section {
           margin-bottom: 20px;
-          width: 40%;
+          width: 60%;
         }
   
         .textInput-section {
@@ -148,18 +151,21 @@
 @media screen and ( min-width : 800px ) {
 
   .register-main {
+    height: 675px;
 
     .main-section {
 
       @include flex(column, center, space-around);
 
-      height: 50%;
+      height: 70%;
       width: 60%;
 
-      form {  
+      form {
+        height: 45%;
+
         .radio-section {
           height: 100%;
-          width: 30%;
+          width: 40%;
         }
   
         .textInput-section {

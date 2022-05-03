@@ -4,7 +4,7 @@
 
   @include flex(column, center, space-evenly);
 
-  height: 100%;
+  height: 560px;
   width: 100%;
 
   .main-section {
@@ -14,7 +14,7 @@
     background-color: rgb(173, 170, 170);
     height: 100%;
     width: 100%;
-    padding: 15px;
+    padding: 15px 0 0;
 
     .filter-section {
 
@@ -29,15 +29,15 @@
 
         width: 80%;
 
-        .CPF-CNPJ-radio-label {
+        .username-email-radio-label {
 
           @include flex(row, center, center);
 
           width: 30vw;
 
           input {
-            transform: scale(1.8);
-            margin-right: 10px;
+            transform: scale(1.6);
+            margin-right: 7px;
           }
         }
       }
@@ -98,7 +98,15 @@
       }
     }
 
-    .cpf-cnpj-list-section {
+    .array-length {
+      font-size: 1.5em;
+      font-style: italic;
+      font-weight: bold;
+      position: relative;
+      top: 15px;
+    }
+
+    .user-list-section {
       
       @include flex(column, center, flex-start);
 
@@ -107,7 +115,7 @@
       overflow: auto;
       width: 100%;
 
-      .cpf-cnpj-card {
+      .user-card {
 
         @include flex(row, center, space-between);
 
@@ -153,30 +161,30 @@
   }
 }
 
-@media screen and ( min-width : 800px ) {
+@media screen and ( min-width : 610px ) {
 
   .consult-main {
     height: 675px;
-  
+
     .main-section {
+      padding: 15px;
 
       .filter-section {
-        width: 50%;
+        width: 75%;
 
         .sort-radio-section {
           width: 260px;
         }
       }
+
+      .user-list-section {
   
-      .cpf-cnpj-list-section {
-        width: 70%;
-  
-        .cpf-cnpj-card {
-          font-size: 1.2em;
+        .user-card {
+          font-size: 1em;
           padding: 15px;
   
           h4 {
-            font-size: 1.2em;
+            font-size: 1.1em;
           }
   
           label {
@@ -192,7 +200,7 @@
 
             input {
               margin-right: 10px;
-              transform: scale(1.7);
+              transform: scale(1.6);
             }
           }
   
@@ -204,6 +212,23 @@
             }
           }
         }
+      }
+    }
+  }
+}
+
+@media screen and ( min-width : 800px ) {
+
+  .consult-main {
+  
+    .main-section {
+
+      .filter-section {
+        width: 50%;
+      }
+  
+      .user-list-section {
+        width: 85%;
       }
     }
 
