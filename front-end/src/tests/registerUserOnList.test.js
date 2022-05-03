@@ -16,7 +16,7 @@ const TEXT_INPUT = 'Username/Email';
 const USERNAME_RADIO = 'Username';
 const EMAIL_RADIO = 'Email';
 const RESPONSE_MESSAGE = 'response-message';
-const REGISTER_BUTTON = /registrar/i
+const REGISTER_BUTTON = /registrar/i;
 
 const axiosPostMockResolved = (returnValue) => {
   axios.post.mockResolvedValue(returnValue);
