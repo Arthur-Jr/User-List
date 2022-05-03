@@ -15,7 +15,7 @@ services:
     ports:
       - 3001:3001
     environment:
-      DB_URL: mongodb://db:27017/cpf-cnpj-list
+      DB_URL: mongodb://db:27017/user-list
     depends_on:
       - "db"
   db:
@@ -24,5 +24,5 @@ services:
     ports:
       - 3002:27017
     environment:
-      MONGO_INITDB_DATABASE: cpf-cnpj-list
+      MONGO_INITDB_DATABASE: user-list
     restart: 'always'
