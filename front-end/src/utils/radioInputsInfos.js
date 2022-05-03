@@ -11,7 +11,7 @@ export const statusRadio = [
 ];
 
 export const typeFilterRadio = [
-  { value: 'Username/Email', name: 'username-email-radio', text: 'Username/Email', checked: true },
+  { value: 'Username/Email', name: 'username-email-radio', text: 'Todos', checked: true },
   { value: 'Username', name: 'username-email-radio', text: 'Username', checked: false },
   { value: 'Email', name: 'username-email-radio', text: 'Email', checked: false },
 ];
