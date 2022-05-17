@@ -1,5 +1,11 @@
 # Contexto
-Teste Técnico da neoway. Foi desenvolvido um CRUD/validador de CPF/CNPJ, onde é possivel adicionar, remover, editar e deletar.
+Foi desenvolvido um CRUD/Block list de Username/Email, onde é possivel adicionar, remover, editar e deletar.
+
+<br>
+
+### [Link do projeto](https://aj-user-list-client.herokuapp.com/) :eyes:
+
+<br>
 
 ## Técnologias usadas
 
@@ -10,6 +16,7 @@ Front-end:
   - Sass
 
 Back-end:
+  - Swagger - [Link da documentção do back](https://aj-user-list-server.herokuapp.com/api-docs/)
   - JavaScript
   - Node.js(MSC)
   - Express
@@ -24,7 +31,7 @@ Back-end:
 Copie e cole em seu terminal:
 
 ```
-git clone git@github.com:Arthur-Jr/neoway-teste.git && cd neoway-teste/
+git@github.com:Arthur-Jr/User-List.git && cd User-List/
 ```
 
 <br>
