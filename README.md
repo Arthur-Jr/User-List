@@ -1,8 +1,6 @@
 # Contexto
 Foi desenvolvido um CRUD/Block list de Username/Email, onde é possivel adicionar, remover, editar e deletar.
 
-<br>
-
 ### [Link do projeto](https://aj-user-list-client.herokuapp.com/) :eyes:
 
 <br>
